@@ -19,13 +19,17 @@
     1. Create a file  posts/your-slug.md  and write in Markdown
     2. Add one line to the POSTS list in the script at the
        bottom of this file:
-         { slug:'your-slug', title:'Your title', date:'Aug 2026' },
-    Newest first. LaTeX works in posts: $E=mc^2$ or $$...$$
+         { slug:'your-slug', title:'Your title' },
+    Newest first. Add  date:'Aug 2026'  if you want a date shown.
+    LaTeX works in posts: $E=mc^2$ or $$...$$
 
   FILES THIS PAGE EXPECTS IN THE SAME REPO
     photo.jpg
     SiddharthJain_CV.pdf
-    posts/hello-world.md
+    poster-qce2026.pdf          <-- upload your IEEE QCE poster
+    posts/anyons.md
+
+  SEARCH FOR  "Add term"  — six teaching terms need filling in
   ============================================================
 -->
 <html lang="en">
@@ -181,7 +185,7 @@
   a{color:var(--accent)}
   a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
-  /* ---------- entries: dates in the margin ---------- */
+  /* ---------- entries: dates or terms in the margin ---------- */
   .entry{
     display:grid;
     grid-template-columns:7.25rem 1fr;
@@ -257,25 +261,6 @@
   }
   .pub-links a:hover{border-color:var(--accent);background:var(--accent-wash)}
 
-  /* ---------- plain lists ---------- */
-  .plain{list-style:none;margin:0;padding:0}
-  .plain li{
-    padding:.85rem 0;
-    border-top:1px solid var(--rule);
-    max-width:64ch;
-    font-size:1rem;
-    line-height:1.6;
-  }
-  .plain li:first-child{border-top:none;padding-top:0}
-  .plain strong{font-weight:600}
-  .plain small{
-    display:block;
-    color:var(--slate);
-    font-size:.9375rem;
-    line-height:1.55;
-    margin-top:.15rem;
-  }
-
   /* ---------- blog ---------- */
   .post-link{
     font:600 1.0625rem/1.42 var(--serif);
@@ -286,6 +271,9 @@
   }
   .post-link:hover{color:var(--accent);border-bottom-color:var(--accent)}
   .blog-empty{color:var(--slate);font-size:1rem}
+  /* used for posts with no date, so there's no empty margin column */
+  .post-row{padding:1.4rem 0;border-top:1px solid var(--rule)}
+  .post-row:first-child{border-top:none;padding-top:0}
 
   .back{
     display:inline-block;
@@ -379,7 +367,6 @@
       <li><a href="#publications">Publications</a></li>
       <li><a href="#blog">Blog</a></li>
       <li><a href="#teaching">Teaching</a></li>
-      <li><a href="#education">Education</a></li>
     </ul>
 
     <ul class="links">
@@ -393,7 +380,7 @@
   <!-- ============ MAIN ============ -->
   <main>
 
-    <!-- ===================== ABOUT ===================== -->
+    <!-- ===================== ABOUT (education merged in) ===================== -->
     <section class="panel is-active" id="about">
       <p class="lede">
         I am a PhD candidate in physics at the University of Pittsburgh, advised
@@ -403,6 +390,32 @@
       <p>
         You can reach me at <a href="mailto:sij50@pitt.edu">sij50@pitt.edu</a>.
       </p>
+
+      <p class="subhead">Education</p>
+
+      <div class="entry">
+        <div class="entry-when">Aug 2023&ndash;</div>
+        <div>
+          <h3 class="entry-title">PhD, Physics</h3>
+          <p class="entry-where">University of Pittsburgh &middot; GPA 3.8/4.0</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2020&ndash;22</div>
+        <div>
+          <h3 class="entry-title">MSc, Physics</h3>
+          <p class="entry-where">Indian Institute of Technology Kanpur &middot; CGPA 8.56/10</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2017&ndash;20</div>
+        <div>
+          <h3 class="entry-title">BSc (Hons.), Physics</h3>
+          <p class="entry-where">Institute of Science, Banaras Hindu University &middot; CGPA 8.53/10</p>
+        </div>
+      </div>
     </section>
 
     <!-- ===================== RESEARCH ===================== -->
@@ -489,6 +502,10 @@
             Poster accepted at IEEE QCE (Quantum Week) 2026; extended abstract to
             appear in the <em>Proceedings of IEEE QCE 2026</em>
           </p>
+          <p class="pub-links">
+            <!-- upload the poster to the repo as poster-qce2026.pdf -->
+            <a href="poster-qce2026.pdf">Poster</a>
+          </p>
         </div>
       </div>
 
@@ -538,42 +555,56 @@
     </section>
 
     <!-- ===================== TEACHING ===================== -->
+    <!-- Replace every "Add term" below with e.g. Fall 2024, Spring 2025.
+         Merge two rows if you taught both in the same term. -->
     <section class="panel" id="teaching">
       <p class="label">Teaching</p>
-      <ul class="plain">
-        <li>
-          <strong>Teaching assistant </strong>, University of Pittsburgh
-          <small>PHYS 0110 / 0111 (Introductory Physics Theory for PreMed students) &middot; PHYS 0175 (Introductory Physics Lab &amp; Theory for Engineering students)
-          &middot; PHYS 0525 (Electronics Lab for Physics majors) &middot; PHYS 0212 / 0219 (Introductory Physics Lab for PreMed students)</small>
-        </li>
-      </ul>
-    </section>
-
-    <!-- ===================== EDUCATION ===================== -->
-    <section class="panel" id="education">
-      <p class="label">Education</p>
 
       <div class="entry">
-        <div class="entry-when">Aug 2023&ndash;</div>
+        <div class="entry-when">Add term</div>
         <div>
-          <h3 class="entry-title">PhD, Physics</h3>
-          <p class="entry-where">University of Pittsburgh &middot; GPA 3.8/4.0</p>
+          <h3 class="entry-title">PHYS 0110</h3>
+          <p class="entry-where">Teaching assistant &middot; lab &amp; theory</p>
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-when">2020&ndash;22</div>
+        <div class="entry-when">Add term</div>
         <div>
-          <h3 class="entry-title">MSc, Physics</h3>
-          <p class="entry-where">Indian Institute of Technology Kanpur &middot; CGPA 8.56/10</p>
+          <h3 class="entry-title">PHYS 0111</h3>
+          <p class="entry-where">Teaching assistant &middot; lab &amp; theory</p>
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-when">2017&ndash;20</div>
+        <div class="entry-when">Add term</div>
         <div>
-          <h3 class="entry-title">BSc (Hons.), Physics</h3>
-          <p class="entry-where">Institute of Science, Banaras Hindu University &middot; CGPA 8.53/10</p>
+          <h3 class="entry-title">PHYS 0175</h3>
+          <p class="entry-where">Teaching assistant &middot; lab &amp; theory</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">Add term</div>
+        <div>
+          <h3 class="entry-title">PHYS 0212</h3>
+          <p class="entry-where">Teaching assistant &middot; lab</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">Add term</div>
+        <div>
+          <h3 class="entry-title">PHYS 0219</h3>
+          <p class="entry-where">Teaching assistant &middot; lab</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">Add term</div>
+        <div>
+          <h3 class="entry-title">PHYS 0525</h3>
+          <p class="entry-where">Teaching assistant &middot; electronics lab</p>
         </div>
       </div>
     </section>
@@ -602,9 +633,10 @@
 /* ============================================================
    BLOG POSTS — the only list you edit. Newest first.
    Each entry needs a matching file at  posts/<slug>.md
+   'date' is optional; leave it out and no date is shown.
    ============================================================ */
 var POSTS = [
-  { slug: 'hello-world', title: 'Hello world', date: 'August 2026' }
+  { slug: 'anyons', title: 'The cool maths behind anyons' }
 ];
 
 /* ---- nothing below here needs editing ---- */
@@ -651,9 +683,11 @@ var POSTS = [
       return;
     }
     listEl.innerHTML = POSTS.map(function (p) {
+      var link = '<a class="post-link" href="#blog/' + p.slug + '">' + p.title + '</a>';
+      if (!p.date) return '<div class="post-row">' + link + '</div>';
       return '<div class="entry">' +
                '<div class="entry-when">' + p.date + '</div>' +
-               '<div><a class="post-link" href="#blog/' + p.slug + '">' + p.title + '</a></div>' +
+               '<div>' + link + '</div>' +
              '</div>';
     }).join('');
   }
@@ -687,7 +721,9 @@ var POSTS = [
     idxEl.hidden = true;
     postEl.hidden = false;
     document.getElementById('post-title').textContent = meta ? meta.title : 'Post not found';
-    document.getElementById('post-date').textContent  = meta ? meta.date : '';
+    var dateEl = document.getElementById('post-date');
+    dateEl.textContent = (meta && meta.date) ? meta.date : '';
+    dateEl.hidden = !(meta && meta.date);
     var body = document.getElementById('post-body');
 
     if (!meta) { body.innerHTML = '<p>No post with that name.</p>'; return; }
