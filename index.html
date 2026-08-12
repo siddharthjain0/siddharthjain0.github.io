@@ -26,7 +26,8 @@
     headings once a post has 3 or more of them.
 
   FILES THIS PAGE EXPECTS IN THE SAME REPO
-    photo.jpg
+    photo.jpg          (header thumbnail)
+    photo-full.jpg     (shown when the photo is clicked)
     SiddharthJain_CV.pdf
     posts/anyons.md
   ============================================================
@@ -86,13 +87,55 @@
     padding:clamp(2.25rem,6vw,4rem) 0 clamp(1.5rem,3vw,2.25rem);
   }
   .id{display:flex;align-items:center;gap:1.35rem}
+  /* the photo is a button so it can be clicked to enlarge */
+  .portrait-btn{
+    display:block;
+    flex:0 0 6.5rem;
+    padding:0;border:none;background:none;
+    line-height:0;
+    cursor:zoom-in;
+  }
   .portrait{
     display:block;
-    width:5.25rem;
-    flex:0 0 5.25rem;
+    width:100%;
     height:auto;
     border:1px solid var(--rule);
+    transition:border-color .18s,transform .18s,box-shadow .18s;
   }
+  .portrait-btn:hover .portrait,
+  .portrait-btn:focus-visible .portrait{
+    border-color:var(--accent);
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(20,22,27,.14);
+  }
+  .portrait-btn:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+  @media (max-width:520px){
+    .portrait-btn{flex:0 0 4.75rem}
+  }
+
+  /* ---------- click-to-enlarge overlay ---------- */
+  .lightbox{
+    position:fixed;inset:0;z-index:50;
+    display:flex;align-items:center;justify-content:center;
+    padding:clamp(1rem,4vw,3rem);
+    background:rgba(10,11,14,.9);
+    cursor:zoom-out;
+  }
+  .lightbox[hidden]{display:none}
+  .lightbox img{
+    max-width:min(100%,62rem);
+    max-height:100%;
+    width:auto;height:auto;
+    box-shadow:0 24px 70px rgba(0,0,0,.55);
+  }
+  .lightbox-close{
+    position:absolute;top:.75rem;right:1.25rem;
+    background:none;border:none;color:#fff;
+    font:300 2.5rem/1 var(--serif);
+    cursor:pointer;padding:.25rem .6rem;opacity:.7;
+    transition:opacity .15s;
+  }
+  .lightbox-close:hover,.lightbox-close:focus-visible{opacity:1}
   .name{
     font:300 clamp(1.85rem,4.5vw,2.75rem)/1.08 var(--serif);
     letter-spacing:-.028em;
@@ -177,11 +220,14 @@
   }
 
   /* the one big piece of type on the site */
+  /* THE ABOUT HEADLINE SIZE LIVES HERE.
+     clamp(smallest, scales-with-window, largest)
+     To shrink it further, lower the LAST number (2.25rem). */
   .display{
-    font:300 clamp(1.95rem,5.2vw,3.25rem)/1.16 var(--serif);
-    letter-spacing:-.03em;
-    margin:0 0 2rem;
-    max-width:28ch;
+    font:300 clamp(1.5rem,3.4vw,2.25rem)/1.28 var(--serif);
+    letter-spacing:-.02em;
+    margin:0 0 1.75rem;
+    max-width:36ch;
   }
 
   p{margin:0 0 1.2rem;max-width:var(--measure)}
@@ -408,7 +454,7 @@
   @media print{
     :root{--paper:#fff;--ink:#000;--slate:#3a3a3a;--accent:#000;--accent-wash:none}
     .inner{max-width:none}
-    .navband,.portrait,.pub-links,.back,.post-toc{display:none}
+    .navband,.portrait-btn,.pub-links,.back,.post-toc,.lightbox{display:none}
     .post-layout{display:block}
     .panel{display:block!important;animation:none}
   }
@@ -422,7 +468,9 @@
 <div class="band">
   <header class="inner masthead">
     <div class="id">
-      <img class="portrait" src="photo.jpg" alt="Siddharth Jain">
+      <button class="portrait-btn" id="portrait-btn" aria-label="View larger photo" title="Click to enlarge">
+        <img class="portrait" src="photo.jpg" alt="Siddharth Jain">
+      </button>
       <div>
         <h1 class="name">Siddharth Jain</h1>
         <p class="role">PhD candidate &middot; Physics &middot; University of Pittsburgh</p>
@@ -711,6 +759,47 @@
   </footer>
   </div>
 </div>
+
+<!-- ============ ENLARGED PHOTO OVERLAY ============ -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="Siddharth Jain">
+</div>
+
+<script>
+/* Click the header photo to see the full uncropped shot. */
+(function () {
+  var btn   = document.getElementById('portrait-btn');
+  var box   = document.getElementById('lightbox');
+  var img   = document.getElementById('lightbox-img');
+  var close = document.getElementById('lightbox-close');
+  if (!btn || !box || !img) return;
+
+  /* if photo-full.jpg isn't in the repo, fall back to the cropped one */
+  img.addEventListener('error', function () {
+    if (img.getAttribute('src') !== 'photo.jpg') img.setAttribute('src', 'photo.jpg');
+  });
+
+  function open() {
+    img.setAttribute('src', 'photo-full.jpg');
+    box.hidden = false;
+    document.body.style.overflow = 'hidden';
+    close.focus();
+  }
+  function shut() {
+    box.hidden = true;
+    document.body.style.overflow = '';
+    btn.focus();
+  }
+
+  btn.addEventListener('click', open);
+  box.addEventListener('click', shut);
+  close.addEventListener('click', function (e) { e.stopPropagation(); shut(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !box.hidden) shut();
+  });
+})();
+</script>
 
 <script>
   window.MathJax = {
