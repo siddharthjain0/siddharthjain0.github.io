@@ -22,14 +22,13 @@
          { slug:'your-slug', title:'Your title' },
     Newest first. Add  date:'Aug 2026'  if you want a date shown.
     LaTeX works in posts: $E=mc^2$ or $$...$$
+    A contents sidebar is built automatically from your ##
+    headings once a post has 3 or more of them.
 
   FILES THIS PAGE EXPECTS IN THE SAME REPO
     photo.jpg
     SiddharthJain_CV.pdf
-    poster-qce2026.pdf          <-- upload your IEEE QCE poster
     posts/anyons.md
-
-  SEARCH FOR  "Add term"  — six teaching terms need filling in
   ============================================================
 -->
 <html lang="en">
@@ -53,6 +52,8 @@
     --accent-wash:rgba(53,56,205,.07);
     --serif:"Spectral",Charter,Georgia,"Times New Roman",serif;
     --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --gutter:clamp(1.25rem,5vw,3rem);
+    --measure:46rem;   /* how wide prose is allowed to run */
   }
   @media (prefers-color-scheme:dark){
     :root{
@@ -67,83 +68,46 @@
     margin:0;
     background:var(--paper);
     color:var(--ink);
-    font:400 1.0625rem/1.68 var(--serif);
+    font:400 1.125rem/1.7 var(--serif);
     font-feature-settings:"onum" 1;
     -webkit-font-smoothing:antialiased;
   }
 
-  .page{
-    max-width:66rem;
-    margin:0 auto;
-    padding:clamp(2.5rem,7vw,5.5rem) clamp(1.25rem,5vw,3rem) 4rem;
-    display:grid;
-    grid-template-columns:15rem 1fr;
-    gap:clamp(2rem,6vw,5rem);
-    align-items:start;
-  }
-  @media (max-width:860px){
-    .page{grid-template-columns:1fr;gap:2.25rem}
-  }
+  .band{padding-left:var(--gutter);padding-right:var(--gutter)}
+  .inner{max-width:68rem;margin:0 auto}
 
-  /* ---------- left rail ---------- */
-  .rail{position:sticky;top:clamp(2.5rem,7vw,5.5rem)}
-  @media (max-width:860px){.rail{position:static}}
-
-  .rail-head{margin:0 0 1.9rem}
+  /* ---------- masthead ---------- */
+  .masthead{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:1.75rem 2.5rem;
+    padding:clamp(2.25rem,6vw,4rem) 0 clamp(1.5rem,3vw,2.25rem);
+  }
+  .id{display:flex;align-items:center;gap:1.35rem}
   .portrait{
     display:block;
-    width:100%;
-    max-width:12rem;
+    width:5.25rem;
+    flex:0 0 5.25rem;
     height:auto;
-    margin:0 0 1.1rem;
     border:1px solid var(--rule);
   }
-  .rail-name{
-    font:300 1.625rem/1.15 var(--serif);
-    letter-spacing:-.022em;
-    margin:0 0 .45rem;
+  .name{
+    font:300 clamp(1.85rem,4.5vw,2.75rem)/1.08 var(--serif);
+    letter-spacing:-.028em;
+    margin:0 0 .5rem;
   }
-  .rail-role{
-    font:400 .75rem/1.7 var(--mono);
+  .role{
+    font:400 .8125rem/1.6 var(--mono);
     color:var(--slate);
     letter-spacing:.02em;
     margin:0;
   }
-  /* on phones the photo sits beside the name instead of above it */
-  @media (max-width:860px){
-    .rail-head{display:flex;gap:1.15rem;align-items:flex-start}
-    .portrait{width:6.5rem;max-width:6.5rem;flex:0 0 6.5rem;margin:0}
+  .links{
+    display:flex;flex-wrap:wrap;gap:.35rem 1.5rem;
+    list-style:none;margin:0;padding:0;
   }
-
-  /* ---------- tab menu ---------- */
-  .nav{
-    list-style:none;
-    margin:0 0 1.6rem;
-    padding:0 0 1.6rem;
-    border-bottom:1px solid var(--rule);
-  }
-  .nav a{
-    display:block;
-    font:500 .75rem/1 var(--mono);
-    text-transform:uppercase;
-    letter-spacing:.11em;
-    color:var(--slate);
-    text-decoration:none;
-    padding:.55rem 0 .55rem .85rem;
-    border-left:2px solid transparent;
-    transition:color .15s,border-color .15s;
-  }
-  .nav a:hover{color:var(--ink)}
-  .nav a[aria-current="page"]{color:var(--accent);border-left-color:var(--accent)}
-  @media (max-width:860px){
-    .nav{display:flex;flex-wrap:wrap;gap:.4rem;padding-bottom:1.6rem}
-    .nav a{padding:.45rem .6rem;border:1px solid var(--rule)}
-    .nav a[aria-current="page"]{border-color:var(--accent);background:var(--accent-wash)}
-  }
-
-  /* ---------- external links ---------- */
-  .links{list-style:none;margin:0;padding:0}
-  .links li{margin-bottom:.55rem}
   .links a{
     font:500 .75rem/1.4 var(--mono);
     text-transform:uppercase;
@@ -155,96 +119,139 @@
   }
   .links a:hover,.links a:focus-visible{color:var(--accent);border-color:var(--accent)}
 
+  /* ---------- sticky top tabs ---------- */
+  .navband{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav{
+    display:flex;flex-wrap:wrap;gap:0 2.25rem;
+    list-style:none;margin:0;padding:0;
+  }
+  .nav a{
+    display:block;
+    font:500 .75rem/1 var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.13em;
+    color:var(--slate);
+    text-decoration:none;
+    padding:1.15rem 0;
+    margin-bottom:-1px;
+    border-bottom:2px solid transparent;
+    transition:color .15s,border-color .15s;
+  }
+  .nav a:hover{color:var(--ink)}
+  .nav a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--accent)}
+  @media (max-width:640px){
+    .nav{gap:0 1.2rem}
+    .nav a{font-size:.6875rem;letter-spacing:.1em;padding:.95rem 0}
+  }
+
+  main{padding:clamp(2.5rem,5vw,4rem) 0 0}
+
   /* ---------- panels ---------- */
   .panel{display:none}
   .panel.is-active{display:block;animation:rise .45s cubic-bezier(.22,.68,.3,1) both}
   @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
   .label{
-    font:500 .6875rem/1 var(--mono);
+    font:500 .75rem/1 var(--mono);
     text-transform:uppercase;
-    letter-spacing:.16em;
-    color:var(--slate);
-    margin:0 0 1.4rem;
-    padding-bottom:.65rem;
+    letter-spacing:.17em;
+    color:var(--accent);
+    margin:0 0 1.75rem;
+    padding-bottom:.7rem;
     border-bottom:1px solid var(--rule);
   }
   .subhead{
-    font:500 .6875rem/1 var(--mono);
+    font:500 .75rem/1 var(--mono);
     text-transform:uppercase;
-    letter-spacing:.16em;
-    color:var(--slate);
-    margin:3rem 0 1.4rem;
-    padding-bottom:.65rem;
+    letter-spacing:.17em;
+    color:var(--accent);
+    margin:3.5rem 0 1.75rem;
+    padding-bottom:.7rem;
     border-bottom:1px solid var(--rule);
   }
 
-  p{margin:0 0 1.15rem;max-width:64ch}
+  /* the one big piece of type on the site */
+  .display{
+    font:300 clamp(1.95rem,5.2vw,3.25rem)/1.16 var(--serif);
+    letter-spacing:-.03em;
+    margin:0 0 2rem;
+    max-width:28ch;
+  }
+
+  p{margin:0 0 1.2rem;max-width:var(--measure)}
   p:last-child{margin-bottom:0}
-  .lede{color:var(--slate)}
+  .lede{font-size:1.1875rem;color:var(--slate);max-width:42rem}
   a{color:var(--accent)}
   a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
-  /* ---------- entries: dates or terms in the margin ---------- */
+  /* ---------- dated rows: shared by research, teaching, education ---------- */
   .entry{
     display:grid;
-    grid-template-columns:7.25rem 1fr;
-    gap:0 1.75rem;
-    padding:1.4rem 0;
+    grid-template-columns:9rem 1fr;
+    gap:0 2.25rem;
+    padding:1.75rem 0;
     border-top:1px solid var(--rule);
   }
   .entry:first-of-type{border-top:none;padding-top:0}
-  @media (max-width:560px){
-    .entry{grid-template-columns:1fr;gap:.35rem}
+  @media (max-width:620px){
+    .entry{grid-template-columns:1fr;gap:.4rem;padding:1.4rem 0}
   }
   .entry-when{
-    font:400 .75rem/1.95 var(--mono);
+    font:500 .8125rem/1.8 var(--mono);
     color:var(--slate);
-    letter-spacing:.03em;
+    letter-spacing:.02em;
   }
   .entry-title{
-    margin:0 0 .35rem;
-    font:600 1.0625rem/1.42 var(--serif);
-    letter-spacing:-.008em;
+    margin:0 0 .4rem;
+    font:600 1.25rem/1.32 var(--serif);
+    letter-spacing:-.014em;
   }
   .entry-where{
-    font:400 .75rem/1.65 var(--mono);
+    font:400 .8125rem/1.6 var(--mono);
     color:var(--slate);
-    margin:0 0 .7rem;
+    margin:0 0 .85rem;
     letter-spacing:.015em;
+    max-width:none;
   }
   .entry-where:last-child{margin-bottom:0}
-  .entry-body{font-size:1rem;line-height:1.65;margin:0 0 .8rem}
+  .entry-body{font-size:1.0625rem;line-height:1.7;margin:0 0 .85rem;max-width:var(--measure)}
   .entry-body:last-child{margin-bottom:0}
 
   /* ---------- publications ---------- */
   .pub{
     display:grid;
-    grid-template-columns:7.25rem 1fr;
-    gap:0 1.75rem;
-    padding:1.4rem 0;
+    grid-template-columns:9rem 1fr;
+    gap:0 2.25rem;
+    padding:1.75rem 0;
     border-top:1px solid var(--rule);
   }
   .pub:first-of-type{border-top:none;padding-top:0}
-  @media (max-width:560px){
-    .pub{grid-template-columns:1fr;gap:.35rem}
+  @media (max-width:620px){
+    .pub{grid-template-columns:1fr;gap:.4rem;padding:1.4rem 0}
   }
   .pub-year{
-    font:400 .75rem/1.95 var(--mono);
+    font:500 .8125rem/1.8 var(--mono);
     color:var(--slate);
-    letter-spacing:.03em;
+    letter-spacing:.02em;
   }
   .pub-title{
-    margin:0 0 .4rem;
-    font:600 1.0625rem/1.42 var(--serif);
-    letter-spacing:-.008em;
+    margin:0 0 .5rem;
+    font:600 1.25rem/1.32 var(--serif);
+    letter-spacing:-.014em;
+    max-width:44rem;
   }
   .pub-meta{
-    margin:0 0 .7rem;
-    font-size:.9375rem;
+    margin:0 0 .85rem;
+    font-size:1rem;
     line-height:1.6;
     color:var(--slate);
-    max-width:64ch;
+    max-width:44rem;
   }
   .pub-meta:last-child{margin-bottom:0}
   .pub-meta .me{color:var(--ink);font-weight:600}
@@ -254,27 +261,48 @@
     letter-spacing:.1em;
     text-decoration:none;
     border:1px solid var(--rule);
-    padding:.38rem .58rem;
-    margin:0 .3rem .3rem 0;
+    padding:.45rem .65rem;
+    margin:0 .35rem .35rem 0;
     display:inline-block;
-    transition:border-color .15s,background .15s;
+    transition:border-color .15s,background .15s,color .15s;
   }
   .pub-links a:hover{border-color:var(--accent);background:var(--accent-wash)}
 
-  /* ---------- blog ---------- */
+  /* ---------- skills ---------- */
+  .skill{
+    display:grid;
+    grid-template-columns:9rem 1fr;
+    gap:0 2.25rem;
+    padding:1.35rem 0;
+    border-top:1px solid var(--rule);
+    align-items:baseline;
+  }
+  .skill:first-of-type{border-top:none;padding-top:0}
+  @media (max-width:620px){
+    .skill{grid-template-columns:1fr;gap:.3rem}
+  }
+  .skill-cat{
+    font:500 .75rem/1.8 var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.11em;
+    color:var(--slate);
+  }
+  .skill-list{margin:0;font-size:1.0625rem;line-height:1.7;max-width:var(--measure)}
+
+  /* ---------- blog index ---------- */
   .post-link{
-    font:600 1.0625rem/1.42 var(--serif);
+    font:600 1.25rem/1.32 var(--serif);
     color:var(--ink);
     text-decoration:none;
     border-bottom:1px solid transparent;
-    letter-spacing:-.008em;
+    letter-spacing:-.014em;
   }
   .post-link:hover{color:var(--accent);border-bottom-color:var(--accent)}
-  .blog-empty{color:var(--slate);font-size:1rem}
-  /* used for posts with no date, so there's no empty margin column */
-  .post-row{padding:1.4rem 0;border-top:1px solid var(--rule)}
+  .blog-empty{color:var(--slate);font-size:1.0625rem}
+  .post-row{padding:1.75rem 0;border-top:1px solid var(--rule)}
   .post-row:first-child{border-top:none;padding-top:0}
 
+  /* ---------- reading a post: text column + contents rail ---------- */
   .back{
     display:inline-block;
     font:500 .6875rem/1 var(--mono);
@@ -286,48 +314,86 @@
   }
   .back:hover{color:var(--accent)}
   .post-title{
-    font:300 clamp(1.6rem,3.8vw,2.25rem)/1.22 var(--serif);
-    letter-spacing:-.022em;
-    margin:0 0 .5rem;
-    max-width:38ch;
+    font:300 clamp(1.85rem,4.4vw,2.75rem)/1.14 var(--serif);
+    letter-spacing:-.028em;
+    margin:0 0 .6rem;
+    max-width:34ch;
   }
   .post-date{
-    font:400 .75rem/1 var(--mono);
+    font:500 .8125rem/1 var(--mono);
     color:var(--slate);
-    letter-spacing:.04em;
-    margin:0 0 2.25rem;
+    letter-spacing:.03em;
+    margin:0 0 2.5rem;
   }
-  .post-body{max-width:64ch}
-  .post-body h2{font:600 1.375rem/1.35 var(--serif);letter-spacing:-.012em;margin:2.5rem 0 .8rem}
-  .post-body h3{font:600 1.125rem/1.4 var(--serif);margin:2rem 0 .6rem}
-  .post-body p{margin:0 0 1.2rem;max-width:none}
-  .post-body ul,.post-body ol{margin:0 0 1.2rem;padding-left:1.35rem}
-  .post-body li{margin-bottom:.45rem}
+  .post-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 13rem;
+    gap:0 3.5rem;
+    align-items:start;
+  }
+  @media (max-width:960px){
+    .post-layout{grid-template-columns:1fr}
+    .post-toc{display:none}
+  }
+  .post-toc{position:sticky;top:5.25rem}
+  .toc-label{
+    font:500 .6875rem/1 var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    color:var(--slate);
+    margin:0 0 .9rem;
+    padding-bottom:.6rem;
+    border-bottom:1px solid var(--rule);
+  }
+  .toc-link{
+    display:block;width:100%;
+    background:none;border:none;border-left:2px solid var(--rule);
+    text-align:left;cursor:pointer;
+    font:400 .8125rem/1.45 var(--mono);
+    color:var(--slate);
+    padding:.4rem 0 .4rem .8rem;
+    transition:color .15s,border-color .15s;
+  }
+  .toc-link:hover{color:var(--accent);border-left-color:var(--accent)}
+
+  .post-body{max-width:var(--measure)}
+  .post-body h2{
+    font:600 1.5rem/1.3 var(--serif);
+    letter-spacing:-.016em;
+    margin:3rem 0 .9rem;
+    scroll-margin-top:5.5rem;
+  }
+  .post-body h3{font:600 1.1875rem/1.4 var(--serif);margin:2.25rem 0 .6rem}
+  .post-body p{margin:0 0 1.25rem;max-width:none}
+  .post-body ul,.post-body ol{margin:0 0 1.25rem;padding-left:1.35rem}
+  .post-body li{margin-bottom:.5rem}
   .post-body blockquote{
-    margin:1.6rem 0;padding-left:1.1rem;
-    border-left:2px solid var(--rule);color:var(--slate);
+    margin:2rem 0;padding:.35rem 0 .35rem 1.35rem;
+    border-left:2px solid var(--accent);
+    color:var(--ink);font-style:italic;font-size:1.1875rem;
   }
   .post-body code{
     font:400 .875em/1.5 var(--mono);
     background:var(--accent-wash);padding:.12em .35em;border-radius:2px;
   }
   .post-body pre{
-    background:var(--accent-wash);padding:1rem 1.1rem;
-    overflow-x:auto;border-radius:3px;margin:0 0 1.2rem;
+    background:var(--accent-wash);padding:1.1rem 1.2rem;
+    overflow-x:auto;border-radius:3px;margin:0 0 1.25rem;
   }
-  .post-body pre code{background:none;padding:0;font-size:.8125rem;line-height:1.65}
+  .post-body pre code{background:none;padding:0;font-size:.8125rem;line-height:1.7}
   .post-body img{
     display:block;max-width:100%;height:auto;
-    margin:1.9rem 0;border:1px solid var(--rule);
+    margin:2rem 0;border:1px solid var(--rule);
   }
-  .post-body hr{border:none;border-top:1px solid var(--rule);margin:2.5rem 0}
-  .post-body table{border-collapse:collapse;margin:0 0 1.2rem;font-size:.9375rem}
-  .post-body th,.post-body td{border:1px solid var(--rule);padding:.5rem .75rem;text-align:left}
+  .post-body hr{border:none;border-top:1px solid var(--rule);margin:2.75rem 0}
+  .post-body table{border-collapse:collapse;margin:0 0 1.25rem;font-size:1rem}
+  .post-body th,.post-body td{border:1px solid var(--rule);padding:.55rem .8rem;text-align:left}
   .post-body th{font-weight:600}
+  .post-body mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;padding:.35rem 0}
 
   footer{
-    margin-top:clamp(3.5rem,8vw,5rem);
-    padding-top:1.3rem;
+    margin-top:clamp(4rem,8vw,6rem);
+    padding:1.4rem 0 3.5rem;
     border-top:1px solid var(--rule);
     font:400 .75rem/1.8 var(--mono);
     color:var(--slate);
@@ -336,38 +402,32 @@
   @media (prefers-reduced-motion:reduce){
     .panel.is-active{animation:none}
     *{transition:none!important}
+    html{scroll-behavior:auto}
   }
 
   @media print{
     :root{--paper:#fff;--ink:#000;--slate:#3a3a3a;--accent:#000;--accent-wash:none}
-    .page{display:block;max-width:none;padding:0}
-    .nav,.portrait,.pub-links,.back{display:none}
+    .inner{max-width:none}
+    .navband,.portrait,.pub-links,.back,.post-toc{display:none}
+    .post-layout{display:block}
     .panel{display:block!important;animation:none}
   }
 </style>
-<noscript><style>.panel{display:block!important}.nav,#blog{display:none}</style></noscript>
+<noscript><style>.panel{display:block!important}.navband,#blog{display:none}</style></noscript>
 </head>
 
 <body>
-<div class="page">
 
-  <!-- ============ LEFT RAIL ============ -->
-  <aside class="rail">
-    <div class="rail-head">
+<!-- ============ MASTHEAD ============ -->
+<div class="band">
+  <header class="inner masthead">
+    <div class="id">
       <img class="portrait" src="photo.jpg" alt="Siddharth Jain">
       <div>
-        <h1 class="rail-name">Siddharth Jain</h1>
-        <p class="rail-role">PhD candidate<br>Physics<br>University of Pittsburgh</p>
+        <h1 class="name">Siddharth Jain</h1>
+        <p class="role">PhD candidate &middot; Physics &middot; University of Pittsburgh</p>
       </div>
     </div>
-
-    <ul class="nav">
-      <li><a href="#about">About</a></li>
-      <li><a href="#research">Research</a></li>
-      <li><a href="#publications">Publications</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#teaching">Teaching</a></li>
-    </ul>
 
     <ul class="links">
       <li><a href="mailto:sij50@pitt.edu">Email</a></li>
@@ -375,19 +435,38 @@
       <li><a href="https://scholar.google.com/citations?user=AfLyluAAAAAJ&amp;hl=en">Google&nbsp;Scholar</a></li>
       <li><a href="https://www.linkedin.com/in/siddharth-jain-5841451bb/">LinkedIn</a></li>
     </ul>
-  </aside>
+  </header>
+</div>
 
-  <!-- ============ MAIN ============ -->
+<!-- ============ TABS ============ -->
+<div class="band navband">
+  <div class="inner">
+    <ul class="nav">
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#skills">Skills</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ CONTENT ============ -->
+<div class="band">
+  <div class="inner">
   <main>
 
     <!-- ===================== ABOUT (education merged in) ===================== -->
     <section class="panel is-active" id="about">
+      <h2 class="display">
+        I work in quantum information, communication, and networking.
+      </h2>
+
       <p class="lede">
         I am a PhD candidate in physics at the University of Pittsburgh, advised
-        by Zhehao Dai and Kaushik Seshadreesan. I work in quantum information,
-        communication, and networking.
+        by Zhehao Dai and Kaushik Seshadreesan.
       </p>
-
 
       <p class="subhead">Education</p>
 
@@ -424,7 +503,7 @@
         <div class="entry-when">Mar 2026&ndash;</div>
         <div>
           <h3 class="entry-title">Quantum networks from spin models</h3>
-          <p class="entry-where">with Dr. Zhehao Dai & Dr. Kaushik Seshadreesan</p>
+          <p class="entry-where">with Dr. Zhehao Dai &amp; Dr. Kaushik Seshadreesan</p>
           <p class="entry-body">
             Investigating physical lattice models — specifically the random
             transverse-field Ising model — as a testbed for real-world quantum
@@ -501,7 +580,6 @@
             appear in the <em>Proceedings of IEEE QCE 2026</em>
           </p>
           <p class="pub-links">
-            <!-- upload the poster to the repo as poster-qce2026.pdf -->
             <a href="https://drive.google.com/file/d/1JM21yH9P9r3JBS1Ptn33htc63rArHVK9/view?usp=sharing">Poster</a>
           </p>
         </div>
@@ -548,70 +626,90 @@
         <a class="back" href="#blog">&larr; All posts</a>
         <h2 class="post-title" id="post-title"></h2>
         <p class="post-date" id="post-date"></p>
-        <div class="post-body" id="post-body"></div>
+        <div class="post-layout">
+          <div class="post-body" id="post-body"></div>
+          <aside class="post-toc" id="post-toc" hidden></aside>
+        </div>
       </article>
     </section>
 
     <!-- ===================== TEACHING ===================== -->
-    <!-- Replace every "Add term" below with e.g. Fall 2024, Spring 2025.
-         Merge two rows if you taught both in the same term. -->
     <section class="panel" id="teaching">
-      <p class="label">Teaching Assistant/Fellow</p>
+      <p class="label">Teaching assistant / fellow</p>
 
       <div class="entry">
-        <div class="entry-when">Summer 2024-25</div>
+        <div class="entry-when">Summer 2024&ndash;25</div>
         <div>
           <h3 class="entry-title">PHYS 0110</h3>
-          <p class="entry-where">Introductory College Physics 1 (Algebra Based) &middot; Theory</p>
+          <p class="entry-where">Introductory College Physics 1 (algebra based) &middot; theory</p>
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-when">Summer 2023-24 Summer 2025-26</div>
+        <div class="entry-when">Summer 2023&ndash;24<br>Summer 2025&ndash;26</div>
         <div>
           <h3 class="entry-title">PHYS 0111</h3>
-          <p class="entry-where">Introductory College Physics 2 (Algebra Based) &middot; Theory</p>
+          <p class="entry-where">Introductory College Physics 2 (algebra based) &middot; theory</p>
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-when">Summer 2023-24 Summer 2025-26</div>
+        <div class="entry-when">Summer 2023&ndash;24<br>Summer 2025&ndash;26</div>
         <div>
           <h3 class="entry-title">PHYS 0175</h3>
-          <p class="entry-where">Introductory College Physics 2 (Calculus Based) &middot; Theory</p>
+          <p class="entry-where">Introductory College Physics 2 (calculus based) &middot; theory</p>
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-when">Fall 2023-24 Fall 2025-26 Spring 2025-26</div>
+        <div class="entry-when">Fall 2023&ndash;24<br>Fall 2025&ndash;26<br>Spring 2025&ndash;26</div>
         <div>
           <h3 class="entry-title">PHYS 0212</h3>
-          <p class="entry-where">Introductory College Physics (Algebra Based) &middot; Lab</p>
+          <p class="entry-where">Introductory College Physics (algebra based) &middot; lab</p>
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-when">Spring 2023-24</div>
+        <div class="entry-when">Spring 2023&ndash;24</div>
         <div>
           <h3 class="entry-title">PHYS 0219</h3>
-          <p class="entry-where">Introductory College Physics (Calculus Based) &middot; Lab</p>
+          <p class="entry-where">Introductory College Physics (calculus based) &middot; lab</p>
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-when">Spring 2023-24</div>
+        <div class="entry-when">Spring 2023&ndash;24</div>
         <div>
           <h3 class="entry-title">PHYS 0525</h3>
-          <p class="entry-where">Analog & Digital Electronics Lab</p>
+          <p class="entry-where">Analog &amp; Digital Electronics &middot; lab</p>
         </div>
       </div>
     </section>
 
-    <footer>
-      Last updated August 2026
-    </footer>
+    <!-- ===================== SKILLS ===================== -->
+    <!-- To add a category, copy one .skill block and change both lines. -->
+    <section class="panel" id="skills">
+      <p class="label">Skills</p>
+
+      <div class="skill">
+        <div class="skill-cat">Programming</div>
+        <p class="skill-list">Python &middot; Mathematica &middot; Julia &middot; C++</p>
+      </div>
+
+      <div class="skill">
+        <div class="skill-cat">Computing</div>
+        <p class="skill-list">
+          Pitt Center for Research Computing &mdash; high-performance computing
+        </p>
+      </div>
+    </section>
 
   </main>
+
+  <footer>
+    Last updated August 2026
+  </footer>
+  </div>
 </div>
 
 <script>
@@ -643,6 +741,7 @@ var POSTS = [
   var idxEl  = document.getElementById('blog-index');
   var listEl = document.getElementById('blog-list');
   var postEl = document.getElementById('blog-post');
+  var tocEl  = document.getElementById('post-toc');
   var cache  = {};
 
   /* Warn in the browser console if a tab has no matching panel,
@@ -713,6 +812,33 @@ var POSTS = [
     return html.replace(/@@MATH(\d+)@@/g, function (_, i) { return math[+i]; });
   }
 
+  /* Build the contents rail from the post's own ## headings.
+     Uses buttons, not links, so it can never collide with tab routing. */
+  function buildToc(body) {
+    var hs = body.querySelectorAll('h2');
+    if (hs.length < 3) { tocEl.hidden = true; tocEl.innerHTML = ''; return; }
+    var parts = ['<p class="toc-label">Contents</p>'];
+    Array.prototype.forEach.call(hs, function (h, i) {
+      h.id = 'sec-' + i;
+      parts.push('<button class="toc-link" data-t="sec-' + i + '">' +
+                 h.textContent + '</button>');
+    });
+    tocEl.innerHTML = parts.join('');
+    tocEl.hidden = false;
+    Array.prototype.forEach.call(tocEl.querySelectorAll('.toc-link'), function (b) {
+      b.addEventListener('click', function () {
+        var t = document.getElementById(b.getAttribute('data-t'));
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+
+  function paint(body, html) {
+    body.innerHTML = html;
+    buildToc(body);
+    typeset(body);
+  }
+
   function openPost(slug) {
     var meta = POSTS.filter(function (p) { return p.slug === slug; })[0];
     idxEl.hidden = true;
@@ -723,9 +849,14 @@ var POSTS = [
     dateEl.hidden = !(meta && meta.date);
     var body = document.getElementById('post-body');
 
-    if (!meta) { body.innerHTML = '<p>No post with that name.</p>'; return; }
-    if (cache[slug]) { body.innerHTML = cache[slug]; typeset(body); return; }
+    if (!meta) {
+      tocEl.hidden = true;
+      body.innerHTML = '<p class="blog-empty">No post with that name.</p>';
+      return;
+    }
+    if (cache[slug]) { paint(body, cache[slug]); return; }
 
+    tocEl.hidden = true;
     body.innerHTML = '<p class="blog-empty">Loading&hellip;</p>';
     fetch('posts/' + slug + '.md')
       .then(function (r) {
@@ -734,8 +865,7 @@ var POSTS = [
       })
       .then(function (md) {
         cache[slug] = render(md);
-        body.innerHTML = cache[slug];
-        typeset(body);
+        paint(body, cache[slug]);
       })
       .catch(function () {
         body.innerHTML = '<p class="blog-empty">Could not load <code>posts/' +
@@ -746,6 +876,7 @@ var POSTS = [
   function closePost() {
     idxEl.hidden = false;
     postEl.hidden = true;
+    tocEl.hidden = true;
   }
 
   function route() {
