@@ -1,36 +1,27 @@
 <!DOCTYPE html>
 <!--
   ============================================================
-  PERSONAL ACADEMIC HOMEPAGE — one file, six tabs.
+  SIDDHARTH JAIN — academic homepage. One file, six tabs.
 
   HOW THE TABS WORK
-    Each tab is a <section class="panel" id="something">.
-    Each menu item is a <li><a href="#something">.
-    The id and the href must match. That is the whole trick.
+    Each tab is  <section class="panel" id="something">
+    Each menu item is  <li><a href="#something">
+    The id and the href must match. That's the whole trick.
+    To add a tab, copy one of each and change both strings.
 
-  TO ADD A TAB
-    1. Copy one <li> in the NAV list, change both the label
-       and the href, e.g. href="#awards"
-    2. Copy any <section class="panel">, change its id to
-       match, e.g. id="awards"
-    Done. No other changes needed.
+  FILES THIS PAGE EXPECTS IN THE SAME REPO
+    photo.jpg               (included)
+    SiddharthJain_CV.pdf    (upload your CV with this exact name)
 
-  TO DELETE A TAB
-    Delete its <li> and its <section>. Both.
-
-  EVERYTHING YOU NEED TO CHANGE IS MARKED   EDIT
-  Optional: uncomment the MathJax lines at the bottom to
-  write LaTeX like $E = mc^2$ anywhere on the page.
+  TWO LINKS STILL NEED URLS — search for  PASTE URL
   ============================================================
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- EDIT: title and description (these show up in Google results) -->
-<title>Siddharth Jain — Physics</title>
-<meta name="description" content="PhD candidate in physics at Your University. Research in condensed matter theory.">
+<title>Siddharth Jain — Physics, University of Pittsburgh</title>
+<meta name="description" content="PhD candidate in physics at the University of Pittsburgh, working on quantum networks, entanglement, and strongly correlated quantum matter.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,8 +40,8 @@
   }
   @media (prefers-color-scheme:dark){
     :root{
-      --paper:#101216; --ink:#e7e9ee; --slate:#959dac;
-      --rule:#252931; --accent:#9aa1ff; --accent-wash:rgba(154,161,255,.10);
+      --paper:#0f1115; --ink:#e7e9ee; --slate:#959dac;
+      --rule:#242830; --accent:#9aa1ff; --accent-wash:rgba(154,161,255,.10);
     }
   }
 
@@ -62,48 +53,43 @@
     color:var(--ink);
     font:400 1.0625rem/1.68 var(--serif);
     font-feature-settings:"onum" 1;
+    -webkit-font-smoothing:antialiased;
   }
 
   .page{
-    max-width:64rem;
+    max-width:66rem;
     margin:0 auto;
     padding:clamp(2.5rem,7vw,5.5rem) clamp(1.25rem,5vw,3rem) 4rem;
     display:grid;
-    grid-template-columns:14rem 1fr;
+    grid-template-columns:15rem 1fr;
     gap:clamp(2rem,6vw,5rem);
     align-items:start;
   }
-  @media (max-width:820px){
+  @media (max-width:860px){
     .page{grid-template-columns:1fr;gap:2.25rem}
   }
 
   /* ---------- left rail ---------- */
   .rail{position:sticky;top:clamp(2.5rem,7vw,5.5rem)}
-  @media (max-width:820px){.rail{position:static}}
+  @media (max-width:860px){.rail{position:static}}
 
   .rail-name{
-    font:300 1.5rem/1.2 var(--serif);
-    letter-spacing:-.015em;
-    margin:0 0 .35rem;
+    font:300 1.625rem/1.15 var(--serif);
+    letter-spacing:-.022em;
+    margin:0 0 .5rem;
   }
   .rail-role{
-    font:400 .8125rem/1.5 var(--mono);
+    font:400 .75rem/1.7 var(--mono);
     color:var(--slate);
-    margin:0 0 1.75rem;
-  }
-  .rail-photo{
-    display:block;width:100%;height:auto;
-    margin:0 0 1.75rem;
-    background:var(--accent-wash);
-    aspect-ratio:1/1;
-    object-fit:cover;
+    letter-spacing:.02em;
+    margin:0 0 1.9rem;
   }
 
   /* ---------- tab menu ---------- */
   .nav{
     list-style:none;
-    margin:0 0 1.5rem;
-    padding:0 0 1.5rem;
+    margin:0 0 1.6rem;
+    padding:0 0 1.6rem;
     border-bottom:1px solid var(--rule);
   }
   .nav a{
@@ -113,22 +99,21 @@
     letter-spacing:.11em;
     color:var(--slate);
     text-decoration:none;
-    padding:.55rem 0 .55rem .8rem;
+    padding:.55rem 0 .55rem .85rem;
     border-left:2px solid transparent;
     transition:color .15s,border-color .15s;
   }
   .nav a:hover{color:var(--ink)}
   .nav a[aria-current="page"]{color:var(--accent);border-left-color:var(--accent)}
-
-  @media (max-width:820px){
-    .nav{display:flex;flex-wrap:wrap;gap:.4rem;padding-bottom:1.5rem}
+  @media (max-width:860px){
+    .nav{display:flex;flex-wrap:wrap;gap:.4rem;padding-bottom:1.6rem}
     .nav a{padding:.45rem .6rem;border:1px solid var(--rule)}
     .nav a[aria-current="page"]{border-color:var(--accent);background:var(--accent-wash)}
   }
 
   /* ---------- external links ---------- */
   .links{list-style:none;margin:0;padding:0}
-  .links li{margin-bottom:.5rem}
+  .links li{margin-bottom:.55rem}
   .links a{
     font:500 .75rem/1.4 var(--mono);
     text-transform:uppercase;
@@ -142,10 +127,7 @@
 
   /* ---------- panels ---------- */
   .panel{display:none}
-  .panel.is-active{
-    display:block;
-    animation:rise .45s cubic-bezier(.22,.68,.3,1) both;
-  }
+  .panel.is-active{display:block;animation:rise .45s cubic-bezier(.22,.68,.3,1) both}
   @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
   .label{
@@ -153,73 +135,122 @@
     text-transform:uppercase;
     letter-spacing:.16em;
     color:var(--slate);
-    margin:0 0 1.25rem;
-    padding-bottom:.6rem;
+    margin:0 0 1.4rem;
+    padding-bottom:.65rem;
+    border-bottom:1px solid var(--rule);
+  }
+  .subhead{
+    font:500 .6875rem/1 var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--slate);
+    margin:3rem 0 1.4rem;
+    padding-bottom:.65rem;
     border-bottom:1px solid var(--rule);
   }
 
-  /* the hero: a thesis sentence with real physics set into it */
+  /* ---------- hero ---------- */
   .thesis{
-    font:300 clamp(1.75rem,4.6vw,2.875rem)/1.22 var(--serif);
+    font:300 clamp(1.6rem,4.2vw,2.5rem)/1.24 var(--serif);
     letter-spacing:-.022em;
-    margin:0 0 1.75rem;
-    max-width:34ch;
+    margin:0 0 1.5rem;
+    max-width:36ch;
   }
   .eq{
+    display:inline-block;
+    max-width:100%;
+    overflow-x:auto;
     font-family:var(--serif);
     font-style:italic;
+    font-size:1.0625rem;
     white-space:nowrap;
     color:var(--accent);
     background:var(--accent-wash);
-    padding:.05em .3em;
-    border-radius:2px;
+    padding:.4rem .7rem;
+    border-radius:3px;
   }
-  .eq .up{font-style:normal}
-  .eq sub{font-style:normal;font-size:.62em;letter-spacing:.02em}
+  .eq sub,.eq sup{font-size:.6em;font-style:normal}
+  .eq .op{font-style:normal}
+  .eq-note{
+    font:400 .75rem/1.65 var(--mono);
+    color:var(--slate);
+    margin:.7rem 0 2.25rem;
+    max-width:48ch;
+  }
 
-  p{margin:0 0 1.15rem;max-width:62ch}
+  .portrait{
+    display:block;
+    width:100%;
+    height:auto;
+    margin:0 0 2.25rem;
+    border:1px solid var(--rule);
+  }
+
+  p{margin:0 0 1.15rem;max-width:64ch}
   p:last-child{margin-bottom:0}
   .lede{color:var(--slate)}
-
   a{color:var(--accent)}
   a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
-  /* ---------- research topic blocks ---------- */
-  .topic{padding:0 0 2rem;margin-bottom:2rem;border-bottom:1px solid var(--rule)}
-  .topic:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-  .topic h3{
-    margin:0 0 .6rem;
-    font:600 1.1875rem/1.35 var(--serif);
-    letter-spacing:-.01em;
+  /* ---------- entries: dates in the margin ---------- */
+  .entry{
+    display:grid;
+    grid-template-columns:7.25rem 1fr;
+    gap:0 1.75rem;
+    padding:1.4rem 0;
+    border-top:1px solid var(--rule);
   }
+  .entry:first-of-type{border-top:none;padding-top:0}
+  @media (max-width:560px){
+    .entry{grid-template-columns:1fr;gap:.35rem}
+  }
+  .entry-when{
+    font:400 .75rem/1.95 var(--mono);
+    color:var(--slate);
+    letter-spacing:.03em;
+  }
+  .entry-title{
+    margin:0 0 .35rem;
+    font:600 1.0625rem/1.42 var(--serif);
+    letter-spacing:-.008em;
+  }
+  .entry-where{
+    font:400 .75rem/1.65 var(--mono);
+    color:var(--slate);
+    margin:0 0 .7rem;
+    letter-spacing:.015em;
+  }
+  .entry-body{font-size:1rem;line-height:1.65;margin:0 0 .8rem}
+  .entry-body:last-child{margin-bottom:0}
 
-  /* ---------- publications: year in the margin ---------- */
+  /* ---------- publications ---------- */
   .pub{
     display:grid;
-    grid-template-columns:4rem 1fr;
-    gap:0 1.5rem;
-    padding:1.15rem 0;
-    border-top:1px solid transparent;
+    grid-template-columns:7.25rem 1fr;
+    gap:0 1.75rem;
+    padding:1.4rem 0;
+    border-top:1px solid var(--rule);
   }
-  .pub:not(:first-of-type){border-top-color:var(--rule)}
-  @media (max-width:520px){
-    .pub{grid-template-columns:1fr;gap:.4rem}
+  .pub:first-of-type{border-top:none;padding-top:0}
+  @media (max-width:560px){
+    .pub{grid-template-columns:1fr;gap:.35rem}
   }
   .pub-year{
-    font:500 .8125rem/1.9 var(--mono);
+    font:400 .75rem/1.95 var(--mono);
     color:var(--slate);
-    letter-spacing:.04em;
+    letter-spacing:.03em;
   }
   .pub-title{
-    margin:0 0 .3rem;
-    font:600 1.0625rem/1.45 var(--serif);
-    letter-spacing:-.005em;
+    margin:0 0 .4rem;
+    font:600 1.0625rem/1.42 var(--serif);
+    letter-spacing:-.008em;
   }
   .pub-meta{
-    margin:0 0 .55rem;
+    margin:0 0 .7rem;
     font-size:.9375rem;
+    line-height:1.6;
     color:var(--slate);
-    line-height:1.55;
+    max-width:64ch;
   }
   .pub-meta .me{color:var(--ink);font-weight:600}
   .pub-links a{
@@ -228,36 +259,47 @@
     letter-spacing:.1em;
     text-decoration:none;
     border:1px solid var(--rule);
-    padding:.35rem .55rem;
-    margin-right:.35rem;
+    padding:.38rem .58rem;
+    margin:0 .3rem .3rem 0;
     display:inline-block;
     transition:border-color .15s,background .15s;
   }
   .pub-links a:hover{border-color:var(--accent);background:var(--accent-wash)}
 
-  /* ---------- compact dated lists ---------- */
-  .rows{list-style:none;margin:0;padding:0}
-  .rows li{
-    display:grid;
-    grid-template-columns:6.5rem 1fr;
-    gap:0 1.5rem;
-    padding:.9rem 0;
+  /* ---------- plain bulleted lists ---------- */
+  .plain{list-style:none;margin:0;padding:0}
+  .plain li{
+    padding:.85rem 0;
     border-top:1px solid var(--rule);
+    max-width:64ch;
+    font-size:1rem;
+    line-height:1.6;
   }
-  .rows li:first-child{border-top:none;padding-top:0}
-  @media (max-width:520px){
-    .rows li{grid-template-columns:1fr;gap:.2rem}
+  .plain li:first-child{border-top:none;padding-top:0}
+  .plain strong{font-weight:600}
+  .plain small{
+    display:block;
+    color:var(--slate);
+    font-size:.9375rem;
+    line-height:1.55;
+    margin-top:.15rem;
   }
-  .rows .when{font:400 .8125rem/1.8 var(--mono);color:var(--slate)}
-  .rows .what{margin:0}
-  .rows .what strong{font-weight:600}
-  .rows .what small{display:block;color:var(--slate);font-size:.9375rem;line-height:1.55}
+
+  .skills{
+    margin-top:2.5rem;
+    padding-top:1.4rem;
+    border-top:1px solid var(--rule);
+    font:400 .8125rem/1.9 var(--mono);
+    color:var(--slate);
+    max-width:60ch;
+  }
+  .skills b{color:var(--ink);font-weight:500}
 
   footer{
     margin-top:clamp(3.5rem,8vw,5rem);
-    padding-top:1.25rem;
+    padding-top:1.3rem;
     border-top:1px solid var(--rule);
-    font:400 .8125rem/1.6 var(--mono);
+    font:400 .75rem/1.8 var(--mono);
     color:var(--slate);
   }
 
@@ -268,9 +310,9 @@
 
   /* ---------- printing shows every tab at once ---------- */
   @media print{
-    :root{--paper:#fff;--ink:#000;--slate:#444;--accent:#000;--accent-wash:none}
+    :root{--paper:#fff;--ink:#000;--slate:#3a3a3a;--accent:#000;--accent-wash:none}
     .page{display:block;max-width:none;padding:0}
-    .rail-photo,.nav,.pub-links{display:none}
+    .nav,.portrait,.pub-links{display:none}
     .panel{display:block!important;animation:none}
     .eq{background:none;padding:0}
   }
@@ -283,32 +325,25 @@
 
   <!-- ============ LEFT RAIL ============ -->
   <aside class="rail">
-    <!-- EDIT: name, title, department -->
     <h1 class="rail-name">Siddharth Jain</h1>
-    <p class="rail-role">PhD candidate<br>Department of Physics<br>Your University</p>
+    <p class="rail-role">PhD candidate<br>Physics<br>University of Pittsburgh</p>
 
-    <!-- EDIT: save a square photo as photo.jpg next to this file.
-         Delete this line if you'd rather not have a photo. -->
-    <img class="rail-photo" src="photo.jpg" alt="Portrait of Siddharth Jain">
-
-    <!-- ===== NAV: one <li> per tab. href must match a panel id ===== -->
     <ul class="nav">
       <li><a href="#about">About</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="#publications">Publications</a></li>
-      <li><a href="#talks">Talks</a></li>
       <li><a href="#teaching">Teaching</a></li>
       <li><a href="#education">Education</a></li>
+      <li><a href="#awards">Awards</a></li>
     </ul>
 
-    <!-- EDIT: delete any link you don't have yet -->
     <ul class="links">
-      <li><a href="mailto:you@university.edu">Email</a></li>
-      <li><a href="cv.pdf">CV (PDF)</a></li>
-      <li><a href="https://arxiv.org/a/jain_s_1">arXiv</a></li>
-      <li><a href="https://scholar.google.com/">Google&nbsp;Scholar</a></li>
-      <li><a href="https://orcid.org/0000-0000-0000-0000">ORCID</a></li>
-      <li><a href="https://github.com/siddharthjain0">GitHub</a></li>
+      <li><a href="mailto:sij50@pitt.edu">Email</a></li>
+      <li><a href="SiddharthJain_CV.pdf">CV (PDF)</a></li>
+      <!-- PASTE URL: your Google Scholar profile -->
+      <li><a href="#">Google&nbsp;Scholar</a></li>
+      <!-- PASTE URL: your LinkedIn profile -->
+      <li><a href="#">LinkedIn</a></li>
     </ul>
   </aside>
 
@@ -317,29 +352,40 @@
 
     <!-- ===================== ABOUT ===================== -->
     <section class="panel is-active" id="about">
-      <!-- EDIT: one sentence a physicist in another subfield would understand.
-           The highlighted bit should be a real relation from your work — swap in
-           whatever is characteristic of your problem, or delete the <span>
-           entirely and just write plain words. -->
       <h2 class="thesis">
-        I study how quantum systems reach equilibrium in the regime
-        <span class="eq"><span class="up">&#8463;</span><i>&omega;</i> &#8811; <span class="up">k</span><sub>B</sub><i>T</i></span>.
+        I work on quantum networks, entanglement, and strongly correlated
+        quantum matter.
       </h2>
 
+      <p class="eq">
+        <i>H</i> <span class="op">=</span> &minus;&sum;<sub>&#10216;ij&#10217;</sub>&nbsp;<i>J</i><sub>ij</sub>&nbsp;&sigma;<sup>z</sup><sub>i</sub>&sigma;<sup>z</sup><sub>j</sub> &minus; &sum;<sub>i</sub>&nbsp;<i>h</i><sub>i</sub>&nbsp;&sigma;<sup>x</sup><sub>i</sub>
+      </p>
+      <p class="eq-note">
+        The random transverse-field Ising model — the lattice my current work
+        uses as a testbed for real-world quantum networks.
+      </p>
+
+      <img class="portrait" src="photo.jpg" alt="Siddharth Jain">
+
       <p class="lede">
-        Two or three sentences on the bigger question: what nobody understands
-        yet, and why it matters outside your subfield. Write it for a first-year
-        grad student, not for your committee.
+        I am a PhD candidate in physics at the University of Pittsburgh, advised
+        by Zhehao Dai and Kaushik Seshadreesan. My current work characterizes
+        the multipartite entanglement structure of quantum networks that emerge
+        from disordered spin lattices, and develops methods to exploit those
+        entanglement resources for tasks such as quantum communication and
+        routing.
       </p>
       <p>
-        Then get concrete. What do you actually do all day — tensor networks,
-        cryostats, telescope time, lattice simulations? Name the methods and the
-        systems, because that is what people search for. Say who you work with
-        and name your advisor.
+        Before Pittsburgh I completed an MSc in physics at IIT Kanpur and a BSc
+        (Hons.) in physics at the Institute of Science, BHU. Along the way I have
+        worked on the fractional quantum Hall effect and the Hofstadter&ndash;Hubbard
+        model, Floquet theory for driven superconducting circuits, and
+        first-passage problems in stochastic resetting.
       </p>
-      <p>
-        I am currently on the job market for postdoc positions starting in 2027.
-        <!-- EDIT or delete the line above -->
+
+      <p class="skills">
+        <b>Programming</b> &nbsp;Python &middot; Mathematica &middot; Julia &middot; C++<br>
+        <b>Computing</b> &nbsp;Pitt Center for Research Computing (HPC)
       </p>
     </section>
 
@@ -347,128 +393,172 @@
     <section class="panel" id="research">
       <p class="label">Research</p>
 
-      <!-- EDIT: copy one .topic block per research direction. Two or three
-           is plenty — this page should read like an overview, not a thesis. -->
-      <div class="topic">
-        <h3>First research direction</h3>
-        <p>
-          Open with the question, not the technique. What are you trying to find
-          out, and what makes it hard? Then say what you have done about it and
-          what came out. Link the relevant papers inline so people can jump
-          straight to them.
-        </p>
+      <div class="entry">
+        <div class="entry-when">Mar 2026&ndash;</div>
+        <div>
+          <h3 class="entry-title">Quantum networks from spin models</h3>
+          <p class="entry-where">University of Pittsburgh &middot; Advisors: Zhehao Dai, Kaushik Seshadreesan</p>
+          <p class="entry-body">
+            Investigating physical lattice models — specifically the random
+            transverse-field Ising model — as a testbed for real-world quantum
+            networks. I have characterized the multipartite entanglement
+            structure of the emergent quantum network, and am currently
+            developing methods to optimally exploit these entanglement resources
+            by achieving network topologies suited to tasks such as quantum
+            communication and routing, informed by the underlying spin model.
+          </p>
+        </div>
       </div>
 
-      <div class="topic">
-        <h3>Second research direction</h3>
-        <p>
-          Same shape. If a figure explains this better than words do, drop an
-          image in the repo and add it here with
-          <code>&lt;img src="figure.png" alt="what it shows" style="width:100%"&gt;</code>.
-        </p>
+      <div class="entry">
+        <div class="entry-when">May&ndash;Nov 2025</div>
+        <div>
+          <h3 class="entry-title">Hofstadter&ndash;Hubbard model</h3>
+          <p class="entry-where">University of Pittsburgh &middot; Advisor: Zhehao Dai</p>
+          <p class="entry-body">
+            Studied the fractional quantum Hall effect and Chern&ndash;Simons theory.
+            Implemented a slave-rotor (parton) mean-field treatment of the
+            triangular-lattice Hofstadter&ndash;Hubbard model, built a simulation of
+            spinon-excitation dynamics, and probed the excitation's edge
+            behavior on the lattice in Python.
+          </p>
+        </div>
       </div>
 
-      <div class="topic">
-        <h3>Third research direction</h3>
-        <p>
-          Keep the newest or most interesting direction here, and say plainly if
-          it is still in progress. People find unfinished work more interesting
-          than polished work, and it starts conversations at conferences.
-        </p>
+      <div class="entry">
+        <div class="entry-when">Aug 2024&ndash;May 2025</div>
+        <div>
+          <h3 class="entry-title">Floquet analysis for the SNAIL</h3>
+          <p class="entry-where">University of Pittsburgh &middot; Advisor: Roger Mong</p>
+          <p class="entry-body">
+            Derived the effective Floquet Hamiltonian of a driven anharmonic
+            oscillator with cubic nonlinearity — the reduced model of a driven
+            SNAIL circuit mode — via a Magnus expansion, and built a numerical
+            time-evolution routine in Python to validate the derivation.
+          </p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">Jan&ndash;Jul 2022</div>
+        <div>
+          <h3 class="entry-title">Diffusion under stochastic resetting</h3>
+          <p class="entry-where">Master's research project &middot; IMSc Chennai &middot; Advisor: Arnab Pal</p>
+          <p class="entry-body">
+            Studied escape properties of a diffusing particle in conical-tube
+            geometry under a stochastic resetting strategy. Modified the
+            Fick&ndash;Jacobs equation to include resetting and solved it analytically
+            for the statistical quantities of the process.
+          </p>
+          <p class="entry-body">
+            Escape times turn out to depend strongly on the resetting rate and
+            the initial position. Counter-intuitively, hindering the process at
+            a finite rate can significantly speed up escape; I identified when
+            this occurs and the optimal reset rate minimizing escape time.
+          </p>
+        </div>
+      </div>
+
+      <p class="subhead">Earlier projects</p>
+
+      <div class="entry">
+        <div class="entry-when">Aug&ndash;Nov 2021</div>
+        <div>
+          <h3 class="entry-title">Adiabatic gauge potentials</h3>
+          <p class="entry-where">Reading project &middot; IIT Kanpur &middot; Advisor: Arijit Kundu</p>
+          <p class="entry-body">
+            Studied the formalism of adiabatic gauge potentials (AGP) for
+            classical and quantum systems, variational and perturbative methods
+            to compute them in interacting systems, and their relation to the
+            Fubini&ndash;Study metric, Berry curvature, and counter-diabatic driving.
+            Explored AGPs as a probe of quantum phase transitions and quantum
+            chaos, against OTOCs and level statistics.
+          </p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">Jun&ndash;Aug 2021</div>
+        <div>
+          <h3 class="entry-title">Neutrino phenomenology</h3>
+          <p class="entry-where">Summer internship &middot; IISER Mohali &middot; Advisor: Ambresh Shivaji</p>
+          <p class="entry-body">
+            Studied survival and transition probabilities of neutrino types
+            against energy for different baseline approximations in 3+0 and 3+1
+            models, comparing against experimental data and reviewing the
+            discrepancies between current theory and experiment that motivate
+            physics beyond the Standard Model.
+          </p>
+        </div>
       </div>
     </section>
 
     <!-- ===================== PUBLICATIONS ===================== -->
     <section class="panel" id="publications">
-      <p class="label">Publications</p>
+      <p class="label">Publications &amp; presentations</p>
 
-      <!-- EDIT: copy one .pub block per paper. Newest first.
-           Mark your own name with <span class="me">. -->
       <div class="pub">
         <div class="pub-year">2026</div>
         <div>
-          <h3 class="pub-title">Title of your most recent paper goes here</h3>
+          <h3 class="pub-title">Multipartite entanglement characterization in quantum networks from spin clusters</h3>
           <p class="pub-meta">
-            <span class="me">S. Jain</span>, A. Collaborator, B. Advisor<br>
-            <em>Physical Review Letters</em> 136, 010401
-          </p>
-          <p class="pub-links">
-            <a href="#">arXiv:2601.00000</a><a href="#">Journal</a><a href="#">Code</a>
+            <span class="me">S. Jain</span>, Z. Dai, K. P. Seshadreesan<br>
+            Poster accepted at IEEE QCE (Quantum Week) 2026; extended abstract to
+            appear in the <em>Proceedings of IEEE QCE 2026</em>
           </p>
         </div>
       </div>
 
       <div class="pub">
-        <div class="pub-year">2025</div>
+        <div class="pub-year">2026</div>
         <div>
-          <h3 class="pub-title">A second paper, formatted exactly the same way</h3>
+          <h3 class="pub-title">Sequential vs. simultaneous entanglement swapping under optimal link-layer control</h3>
           <p class="pub-meta">
-            A. Collaborator, <span class="me">S. Jain</span>, B. Advisor<br>
-            <em>Physical Review B</em> 111, 054301
+            P. Srivastava, A. R. Sabavat, <span class="me">S. Jain</span>, A. Scheller-Wolf,
+            S. Tayur, D. Tipper, P. Krishnamurthy, A. Babay, K. P. Seshadreesan
           </p>
           <p class="pub-links">
-            <a href="#">arXiv:2503.00000</a><a href="#">Journal</a>
+            <a href="https://arxiv.org/abs/2605.04047">arXiv:2605.04047</a>
           </p>
         </div>
       </div>
 
       <div class="pub">
-        <div class="pub-year">2024</div>
+        <div class="pub-year">2023</div>
         <div>
-          <h3 class="pub-title">A preprint that isn't published yet</h3>
+          <h3 class="pub-title">Fick&ndash;Jacobs description and first-passage dynamics for diffusion in a channel under stochastic resetting</h3>
           <p class="pub-meta">
-            <span class="me">S. Jain</span>, B. Advisor<br>
-            <em>Submitted</em>
+            <span class="me">S. Jain</span>, D. Boyer, A. Pal, L. Dagdug &nbsp;&mdash;&nbsp; lead first author<br>
+            <em>Journal of Chemical Physics</em> 158, 054113
           </p>
           <p class="pub-links">
-            <a href="#">arXiv:2411.00000</a>
+            <a href="https://doi.org/10.1063/5.0135249">Journal</a>
+            <a href="https://arxiv.org/abs/2211.07904">arXiv:2211.07904</a>
           </p>
         </div>
       </div>
-    </section>
-
-    <!-- ===================== TALKS ===================== -->
-    <section class="panel" id="talks">
-      <p class="label">Talks &amp; posters</p>
-      <ul class="rows">
-        <!-- EDIT -->
-        <li>
-          <span class="when">Mar 2026</span>
-          <p class="what"><strong>Contributed talk</strong>, APS Global Physics Summit
-            <small>Los Angeles, CA &middot; "Title of the talk"</small></p>
-        </li>
-        <li>
-          <span class="when">Sep 2025</span>
-          <p class="what"><strong>Poster</strong>, Gordon Research Conference
-            <small>Ventura, CA</small></p>
-        </li>
-        <li>
-          <span class="when">Jun 2025</span>
-          <p class="what"><strong>Invited seminar</strong>, Institute for Theoretical Physics
-            <small>Host institution</small></p>
-        </li>
-      </ul>
     </section>
 
     <!-- ===================== TEACHING ===================== -->
     <section class="panel" id="teaching">
       <p class="label">Teaching</p>
-      <ul class="rows">
-        <!-- EDIT -->
+      <ul class="plain">
         <li>
-          <span class="when">2025&ndash;26</span>
-          <p class="what"><strong>Quantum Mechanics II</strong> &mdash; teaching assistant
-            <small>Recitations and problem sessions, ~40 students</small></p>
+          <strong>Teaching assistant / fellow</strong>, University of Pittsburgh
+          <small>PHYS 0110 / 0111 (lab &amp; theory) &middot; PHYS 0175 (lab &amp; theory)
+          &middot; PHYS 0525 (electronics lab) &middot; PHYS 0212 / 0219 (lab)</small>
+        </li>
+      </ul>
+
+      <p class="subhead">Service</p>
+      <ul class="plain">
+        <li>
+          <strong>Referee</strong>, Pittsburgh Interdisciplinary Mathematics Review
+          <small>Student-run peer-reviewed journal, Pitt &amp; CMU</small>
         </li>
         <li>
-          <span class="when">2024&ndash;25</span>
-          <p class="what"><strong>Introductory Mechanics Lab</strong> &mdash; teaching assistant
-            <small>Two sections, ~30 students each</small></p>
-        </li>
-        <li>
-          <span class="when">2024</span>
-          <p class="what"><strong>Undergraduate mentoring</strong>
-            <small>Supervised one summer research student</small></p>
+          <strong>Volunteer</strong>, DPF-Pheno 2024 conference
+          <small>Pitt &amp; CMU</small>
         </li>
       </ul>
     </section>
@@ -476,29 +566,104 @@
     <!-- ===================== EDUCATION ===================== -->
     <section class="panel" id="education">
       <p class="label">Education</p>
-      <ul class="rows">
-        <!-- EDIT -->
+
+      <div class="entry">
+        <div class="entry-when">Aug 2023&ndash;</div>
+        <div>
+          <h3 class="entry-title">PhD, Physics</h3>
+          <p class="entry-where">University of Pittsburgh &middot; GPA 3.8/4.0</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2020&ndash;22</div>
+        <div>
+          <h3 class="entry-title">MSc, Physics</h3>
+          <p class="entry-where">Indian Institute of Technology Kanpur &middot; CGPA 8.56/10</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2017&ndash;20</div>
+        <div>
+          <h3 class="entry-title">BSc (Hons.), Physics</h3>
+          <p class="entry-where">Institute of Science, Banaras Hindu University &middot; CGPA 8.53/10</p>
+        </div>
+      </div>
+
+      <p class="subhead">Schools &amp; workshops</p>
+      <ul class="plain">
         <li>
-          <span class="when">2023&ndash;</span>
-          <p class="what"><strong>PhD, Physics</strong> &mdash; Your University
-            <small>Advisor: Prof. Name. Working thesis title goes here.</small></p>
+          <strong>QNumerics Summer School</strong> (2026)
+          <small>College of Information &amp; Computer Sciences, UMass Amherst</small>
         </li>
         <li>
-          <span class="when">2021&ndash;23</span>
-          <p class="what"><strong>MSc, Physics</strong> &mdash; Institution
-            <small>Thesis: title. Advisor: Prof. Name.</small></p>
+          <strong>ICTS-TIFR summer courses</strong>
+          <small>"Light and Beyond" with R. Nityananda (2020) &middot;
+          "Curves and Surfaces: Geometry and Physical Applications" with J. Samuel (2022)</small>
         </li>
         <li>
-          <span class="when">2018&ndash;21</span>
-          <p class="what"><strong>BSc, Physics</strong> &mdash; Institution
-            <small>Any distinction or award worth a line.</small></p>
+          <strong>Madhava Nurture Camp</strong> (2019)
+          <small>St. Xavier's College Ahmedabad &middot; National Board of Higher Mathematics</small>
         </li>
       </ul>
     </section>
 
+    <!-- ===================== AWARDS ===================== -->
+    <section class="panel" id="awards">
+      <p class="label">Awards, grants &amp; honors</p>
+
+      <div class="entry">
+        <div class="entry-when">2026</div>
+        <div>
+          <h3 class="entry-title">PQI Community Collaboration Award</h3>
+          <p class="entry-where">For Dynamic Programming &amp; Reinforcement Learning for Quantum Network Control (DyReQNet-Ctrl)</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2020&ndash;21</div>
+        <div>
+          <h3 class="entry-title">Academic Excellence Award, IIT Kanpur</h3>
+          <p class="entry-where">Highest CGPA in the department</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2019, 2020</div>
+        <div>
+          <h3 class="entry-title">National Graduate Physics Examination</h3>
+          <p class="entry-where">National Topper, top 25 of ~11,000 (2020) &middot; State Topper, top 1% (2019)</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2019, 2020</div>
+        <div>
+          <h3 class="entry-title">Madhava Mathematics Competition</h3>
+          <p class="entry-where">1st state rank (2020) &middot; 3rd state rank (2019) &middot; HBCSE, Tata Institute of Fundamental Research</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2020&ndash;22</div>
+        <div>
+          <h3 class="entry-title">Competitive entrance ranks</h3>
+          <p class="entry-where">All-India Rank 47 of ~15,000 (IIT-JAM) &middot; 46 of ~7,000 (JEST) &middot; 161 (CSIR-NET JRF)</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">2017</div>
+        <div>
+          <h3 class="entry-title">UPSTSE Fellowship</h3>
+          <p class="entry-where">Uttar Pradesh state government</p>
+        </div>
+      </div>
+    </section>
+
     <footer>
-      <!-- EDIT -->
-      Office 000, Physics Building &middot; you@university.edu<br>
+      sij50@pitt.edu &middot; Department of Physics, University of Pittsburgh<br>
       Last updated August 2026
     </footer>
 
