@@ -6,8 +6,14 @@
   TABS
     Each tab is  <section class="panel" id="something">
     Each menu item is  <li><a href="#something">
-    The id and the href must match. To add a tab, copy one of
-    each and change both strings. To delete one, delete both.
+    The id and the href must match, lowercase, no spaces.
+    To add a tab, copy one of each and change both strings.
+    To delete one, delete both.
+
+  !! WHEN DELETING CONTENT FROM A TAB, KEEP ITS </section> !!
+    Every <section class="panel"> must have a matching
+    </section> before the next one starts. If one goes
+    missing, all the tabs below it stop showing.
 
   TO ADD A BLOG POST  (two steps, no HTML needed)
     1. Create a file  posts/your-slug.md  and write in Markdown
@@ -20,8 +26,6 @@
     photo.jpg
     SiddharthJain_CV.pdf
     posts/hello-world.md
-
-  TWO LINKS STILL NEED URLS — search for  PASTE URL
   ============================================================
 -->
 <html lang="en">
@@ -29,7 +33,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Siddharth Jain — Physics, University of Pittsburgh</title>
-<meta name="description" content="PhD candidate in physics at the University of Pittsburgh, working on quantum networks, entanglement, and strongly correlated quantum matter.">
+<meta name="description" content="PhD candidate in physics at the University of Pittsburgh. Quantum information, communication, and networking.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,21 +175,11 @@
     border-bottom:1px solid var(--rule);
   }
 
-  /* ---------- about ---------- */
-  .thesis{
-    font:300 clamp(1.6rem,4.2vw,2.5rem)/1.24 var(--serif);
-    letter-spacing:-.022em;
-    margin:0 0 1.75rem;
-    max-width:36ch;
-  }
-
   p{margin:0 0 1.15rem;max-width:64ch}
   p:last-child{margin-bottom:0}
   .lede{color:var(--slate)}
   a{color:var(--accent)}
   a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
-
-
 
   /* ---------- entries: dates in the margin ---------- */
   .entry{
@@ -361,7 +355,6 @@
     .page{display:block;max-width:none;padding:0}
     .nav,.portrait,.pub-links,.back{display:none}
     .panel{display:block!important;animation:none}
-    .eq{background:none;padding:0}
   }
 </style>
 <noscript><style>.panel{display:block!important}.nav,#blog{display:none}</style></noscript>
@@ -384,7 +377,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="#publications">Publications</a></li>
-      <li><a href="#Blog posts">Blog</a></li>
+      <li><a href="#blog">Blog</a></li>
       <li><a href="#teaching">Teaching</a></li>
       <li><a href="#education">Education</a></li>
     </ul>
@@ -392,7 +385,7 @@
     <ul class="links">
       <li><a href="mailto:sij50@pitt.edu">Email</a></li>
       <li><a href="SiddharthJain_CV.pdf">CV (PDF)</a></li>
-      <li><a href="https://scholar.google.com/citations?user=AfLyluAAAAAJ&hl=en">Google&nbsp;Scholar</a></li>
+      <li><a href="https://scholar.google.com/citations?user=AfLyluAAAAAJ&amp;hl=en">Google&nbsp;Scholar</a></li>
       <li><a href="https://www.linkedin.com/in/siddharth-jain-5841451bb/">LinkedIn</a></li>
     </ul>
   </aside>
@@ -402,13 +395,10 @@
 
     <!-- ===================== ABOUT ===================== -->
     <section class="panel is-active" id="about">
-      <h2 class="thesis">
-  
-      </h2>
-
       <p class="lede">
         I am a PhD candidate in physics at the University of Pittsburgh, advised
-        by Zhehao Dai and Kaushik Seshadreesan. I work in Quantum Information, Communication and Networking.
+        by Zhehao Dai and Kaushik Seshadreesan. I work in quantum information,
+        communication, and networking.
       </p>
       <p>
         You can reach me at <a href="mailto:sij50@pitt.edu">sij50@pitt.edu</a>.
@@ -418,7 +408,6 @@
     <!-- ===================== RESEARCH ===================== -->
     <section class="panel" id="research">
       <p class="label">Research</p>
-
 
       <div class="entry">
         <div class="entry-when">Mar 2026&ndash;</div>
@@ -485,7 +474,7 @@
           </p>
         </div>
       </div>
-
+    </section>
 
     <!-- ===================== PUBLICATIONS ===================== -->
     <section class="panel" id="publications">
@@ -558,7 +547,6 @@
           &middot; PHYS 0525 (electronics lab) &middot; PHYS 0212 / 0219 (lab)</small>
         </li>
       </ul>
-
     </section>
 
     <!-- ===================== EDUCATION ===================== -->
@@ -627,6 +615,26 @@ var POSTS = [
   var listEl = document.getElementById('blog-list');
   var postEl = document.getElementById('blog-post');
   var cache  = {};
+
+  /* Warn in the browser console if a tab has no matching panel,
+     or if a panel ended up nested inside another one. */
+  (function selfCheck() {
+    navs.forEach(function (a) {
+      var id = (a.getAttribute('href') || '').replace(/^#/, '');
+      if (id.indexOf('blog/') === 0) return;
+      if (!document.getElementById(id)) {
+        console.warn('Tab "' + a.textContent.trim() + '" points at #' + id +
+                     ' but no panel has that id.');
+      }
+    });
+    panels.forEach(function (p) {
+      if (p.parentElement && p.parentElement.closest('.panel')) {
+        console.warn('Panel #' + p.id + ' is nested inside #' +
+                     p.parentElement.closest('.panel').id +
+                     ' — a </section> tag is probably missing.');
+      }
+    });
+  })();
 
   function showPanel(id) {
     var match = panels.filter(function (p) { return p.id === id; })[0] || panels[0];
