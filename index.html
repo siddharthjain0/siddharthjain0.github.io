@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <!--
   ============================================================
-  SIDDHARTH JAIN — academic homepage. One file, six tabs.
+  SIDDHARTH JAIN — academic homepage.
 
-  HOW THE TABS WORK
+  TABS
     Each tab is  <section class="panel" id="something">
     Each menu item is  <li><a href="#something">
-    The id and the href must match. That's the whole trick.
-    To add a tab, copy one of each and change both strings.
+    The id and the href must match. To add a tab, copy one of
+    each and change both strings. To delete one, delete both.
+
+  TO ADD A BLOG POST  (two steps, no HTML needed)
+    1. Create a file  posts/your-slug.md  and write in Markdown
+    2. Add one line to the POSTS list in the script at the
+       bottom of this file:
+         { slug:'your-slug', title:'Your title', date:'Aug 2026' },
+    Newest first. LaTeX works in posts: $E=mc^2$ or $$...$$
 
   FILES THIS PAGE EXPECTS IN THE SAME REPO
-    photo.jpg               (included)
-    SiddharthJain_CV.pdf    (upload your CV with this exact name)
+    photo.jpg
+    SiddharthJain_CV.pdf
+    posts/hello-world.md
 
   TWO LINKS STILL NEED URLS — search for  PASTE URL
   ============================================================
@@ -73,16 +81,30 @@
   .rail{position:sticky;top:clamp(2.5rem,7vw,5.5rem)}
   @media (max-width:860px){.rail{position:static}}
 
+  .rail-head{margin:0 0 1.9rem}
+  .portrait{
+    display:block;
+    width:100%;
+    max-width:12rem;
+    height:auto;
+    margin:0 0 1.1rem;
+    border:1px solid var(--rule);
+  }
   .rail-name{
     font:300 1.625rem/1.15 var(--serif);
     letter-spacing:-.022em;
-    margin:0 0 .5rem;
+    margin:0 0 .45rem;
   }
   .rail-role{
     font:400 .75rem/1.7 var(--mono);
     color:var(--slate);
     letter-spacing:.02em;
-    margin:0 0 1.9rem;
+    margin:0;
+  }
+  /* on phones the photo sits beside the name instead of above it */
+  @media (max-width:860px){
+    .rail-head{display:flex;gap:1.15rem;align-items:flex-start}
+    .portrait{width:6.5rem;max-width:6.5rem;flex:0 0 6.5rem;margin:0}
   }
 
   /* ---------- tab menu ---------- */
@@ -149,13 +171,21 @@
     border-bottom:1px solid var(--rule);
   }
 
-  /* ---------- hero ---------- */
+  /* ---------- about ---------- */
   .thesis{
     font:300 clamp(1.6rem,4.2vw,2.5rem)/1.24 var(--serif);
     letter-spacing:-.022em;
-    margin:0 0 1.5rem;
+    margin:0 0 1.75rem;
     max-width:36ch;
   }
+
+  p{margin:0 0 1.15rem;max-width:64ch}
+  p:last-child{margin-bottom:0}
+  .lede{color:var(--slate)}
+  a{color:var(--accent)}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+  /* ---------- hand-set Hamiltonian on the research tab ---------- */
   .eq{
     display:inline-block;
     max-width:100%;
@@ -174,23 +204,9 @@
   .eq-note{
     font:400 .75rem/1.65 var(--mono);
     color:var(--slate);
-    margin:.7rem 0 2.25rem;
-    max-width:48ch;
+    margin:.7rem 0 2.5rem;
+    max-width:52ch;
   }
-
-  .portrait{
-    display:block;
-    width:100%;
-    height:auto;
-    margin:0 0 2.25rem;
-    border:1px solid var(--rule);
-  }
-
-  p{margin:0 0 1.15rem;max-width:64ch}
-  p:last-child{margin-bottom:0}
-  .lede{color:var(--slate)}
-  a{color:var(--accent)}
-  a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
   /* ---------- entries: dates in the margin ---------- */
   .entry{
@@ -220,6 +236,7 @@
     margin:0 0 .7rem;
     letter-spacing:.015em;
   }
+  .entry-where:last-child{margin-bottom:0}
   .entry-body{font-size:1rem;line-height:1.65;margin:0 0 .8rem}
   .entry-body:last-child{margin-bottom:0}
 
@@ -252,6 +269,7 @@
     color:var(--slate);
     max-width:64ch;
   }
+  .pub-meta:last-child{margin-bottom:0}
   .pub-meta .me{color:var(--ink);font-weight:600}
   .pub-links a{
     font:500 .6875rem/1 var(--mono);
@@ -266,7 +284,7 @@
   }
   .pub-links a:hover{border-color:var(--accent);background:var(--accent-wash)}
 
-  /* ---------- plain bulleted lists ---------- */
+  /* ---------- plain lists ---------- */
   .plain{list-style:none;margin:0;padding:0}
   .plain li{
     padding:.85rem 0;
@@ -285,15 +303,66 @@
     margin-top:.15rem;
   }
 
-  .skills{
-    margin-top:2.5rem;
-    padding-top:1.4rem;
-    border-top:1px solid var(--rule);
-    font:400 .8125rem/1.9 var(--mono);
-    color:var(--slate);
-    max-width:60ch;
+  /* ---------- blog ---------- */
+  .post-link{
+    font:600 1.0625rem/1.42 var(--serif);
+    color:var(--ink);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+    letter-spacing:-.008em;
   }
-  .skills b{color:var(--ink);font-weight:500}
+  .post-link:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  .blog-empty{color:var(--slate);font-size:1rem}
+
+  .back{
+    display:inline-block;
+    font:500 .6875rem/1 var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.11em;
+    color:var(--slate);
+    text-decoration:none;
+    margin-bottom:2rem;
+  }
+  .back:hover{color:var(--accent)}
+  .post-title{
+    font:300 clamp(1.6rem,3.8vw,2.25rem)/1.22 var(--serif);
+    letter-spacing:-.022em;
+    margin:0 0 .5rem;
+    max-width:38ch;
+  }
+  .post-date{
+    font:400 .75rem/1 var(--mono);
+    color:var(--slate);
+    letter-spacing:.04em;
+    margin:0 0 2.25rem;
+  }
+  .post-body{max-width:64ch}
+  .post-body h2{font:600 1.375rem/1.35 var(--serif);letter-spacing:-.012em;margin:2.5rem 0 .8rem}
+  .post-body h3{font:600 1.125rem/1.4 var(--serif);margin:2rem 0 .6rem}
+  .post-body p{margin:0 0 1.2rem;max-width:none}
+  .post-body ul,.post-body ol{margin:0 0 1.2rem;padding-left:1.35rem}
+  .post-body li{margin-bottom:.45rem}
+  .post-body blockquote{
+    margin:1.6rem 0;padding-left:1.1rem;
+    border-left:2px solid var(--rule);color:var(--slate);
+  }
+  .post-body code{
+    font:400 .875em/1.5 var(--mono);
+    background:var(--accent-wash);padding:.12em .35em;border-radius:2px;
+  }
+  .post-body pre{
+    background:var(--accent-wash);padding:1rem 1.1rem;
+    overflow-x:auto;border-radius:3px;margin:0 0 1.2rem;
+  }
+  .post-body pre code{background:none;padding:0;font-size:.8125rem;line-height:1.65}
+  .post-body img{
+    display:block;max-width:100%;height:auto;
+    margin:1.9rem 0;border:1px solid var(--rule);
+  }
+  .post-body hr{border:none;border-top:1px solid var(--rule);margin:2.5rem 0}
+  .post-body table{border-collapse:collapse;margin:0 0 1.2rem;font-size:.9375rem}
+  .post-body th,.post-body td{border:1px solid var(--rule);padding:.5rem .75rem;text-align:left}
+  .post-body th{font-weight:600}
 
   footer{
     margin-top:clamp(3.5rem,8vw,5rem);
@@ -308,16 +377,15 @@
     *{transition:none!important}
   }
 
-  /* ---------- printing shows every tab at once ---------- */
   @media print{
     :root{--paper:#fff;--ink:#000;--slate:#3a3a3a;--accent:#000;--accent-wash:none}
     .page{display:block;max-width:none;padding:0}
-    .nav,.portrait,.pub-links{display:none}
+    .nav,.portrait,.pub-links,.back{display:none}
     .panel{display:block!important;animation:none}
     .eq{background:none;padding:0}
   }
 </style>
-<noscript><style>.panel{display:block!important}.nav{display:none}</style></noscript>
+<noscript><style>.panel{display:block!important}.nav,#blog{display:none}</style></noscript>
 </head>
 
 <body>
@@ -325,16 +393,21 @@
 
   <!-- ============ LEFT RAIL ============ -->
   <aside class="rail">
-    <h1 class="rail-name">Siddharth Jain</h1>
-    <p class="rail-role">PhD candidate<br>Physics<br>University of Pittsburgh</p>
+    <div class="rail-head">
+      <img class="portrait" src="photo.jpg" alt="Siddharth Jain">
+      <div>
+        <h1 class="rail-name">Siddharth Jain</h1>
+        <p class="rail-role">PhD candidate<br>Physics<br>University of Pittsburgh</p>
+      </div>
+    </div>
 
     <ul class="nav">
       <li><a href="#about">About</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="#publications">Publications</a></li>
+      <li><a href="#blog">Blog</a></li>
       <li><a href="#teaching">Teaching</a></li>
       <li><a href="#education">Education</a></li>
-      <li><a href="#awards">Awards</a></li>
     </ul>
 
     <ul class="links">
@@ -357,6 +430,20 @@
         quantum matter.
       </h2>
 
+      <p class="lede">
+        I am a PhD candidate in physics at the University of Pittsburgh, advised
+        by Zhehao Dai and Kaushik Seshadreesan. Before Pittsburgh I completed an
+        MSc at IIT Kanpur and a BSc (Hons.) at the Institute of Science, BHU.
+      </p>
+      <p>
+        You can reach me at <a href="mailto:sij50@pitt.edu">sij50@pitt.edu</a>.
+      </p>
+    </section>
+
+    <!-- ===================== RESEARCH ===================== -->
+    <section class="panel" id="research">
+      <p class="label">Research</p>
+
       <p class="eq">
         <i>H</i> <span class="op">=</span> &minus;&sum;<sub>&#10216;ij&#10217;</sub>&nbsp;<i>J</i><sub>ij</sub>&nbsp;&sigma;<sup>z</sup><sub>i</sub>&sigma;<sup>z</sup><sub>j</sub> &minus; &sum;<sub>i</sub>&nbsp;<i>h</i><sub>i</sub>&nbsp;&sigma;<sup>x</sup><sub>i</sub>
       </p>
@@ -364,34 +451,6 @@
         The random transverse-field Ising model — the lattice my current work
         uses as a testbed for real-world quantum networks.
       </p>
-
-      <img class="portrait" src="photo.jpg" alt="Siddharth Jain">
-
-      <p class="lede">
-        I am a PhD candidate in physics at the University of Pittsburgh, advised
-        by Zhehao Dai and Kaushik Seshadreesan. My current work characterizes
-        the multipartite entanglement structure of quantum networks that emerge
-        from disordered spin lattices, and develops methods to exploit those
-        entanglement resources for tasks such as quantum communication and
-        routing.
-      </p>
-      <p>
-        Before Pittsburgh I completed an MSc in physics at IIT Kanpur and a BSc
-        (Hons.) in physics at the Institute of Science, BHU. Along the way I have
-        worked on the fractional quantum Hall effect and the Hofstadter&ndash;Hubbard
-        model, Floquet theory for driven superconducting circuits, and
-        first-passage problems in stochastic resetting.
-      </p>
-
-      <p class="skills">
-        <b>Programming</b> &nbsp;Python &middot; Mathematica &middot; Julia &middot; C++<br>
-        <b>Computing</b> &nbsp;Pitt Center for Research Computing (HPC)
-      </p>
-    </section>
-
-    <!-- ===================== RESEARCH ===================== -->
-    <section class="panel" id="research">
-      <p class="label">Research</p>
 
       <div class="entry">
         <div class="entry-when">Mar 2026&ndash;</div>
@@ -539,6 +598,21 @@
       </div>
     </section>
 
+    <!-- ===================== BLOG ===================== -->
+    <section class="panel" id="blog">
+      <div id="blog-index">
+        <p class="label">Blog</p>
+        <div id="blog-list"></div>
+      </div>
+
+      <article id="blog-post" hidden>
+        <a class="back" href="#blog">&larr; All posts</a>
+        <h2 class="post-title" id="post-title"></h2>
+        <p class="post-date" id="post-date"></p>
+        <div class="post-body" id="post-body"></div>
+      </article>
+    </section>
+
     <!-- ===================== TEACHING ===================== -->
     <section class="panel" id="teaching">
       <p class="label">Teaching</p>
@@ -590,76 +664,6 @@
           <p class="entry-where">Institute of Science, Banaras Hindu University &middot; CGPA 8.53/10</p>
         </div>
       </div>
-
-      <p class="subhead">Schools &amp; workshops</p>
-      <ul class="plain">
-        <li>
-          <strong>QNumerics Summer School</strong> (2026)
-          <small>College of Information &amp; Computer Sciences, UMass Amherst</small>
-        </li>
-        <li>
-          <strong>ICTS-TIFR summer courses</strong>
-          <small>"Light and Beyond" with R. Nityananda (2020) &middot;
-          "Curves and Surfaces: Geometry and Physical Applications" with J. Samuel (2022)</small>
-        </li>
-        <li>
-          <strong>Madhava Nurture Camp</strong> (2019)
-          <small>St. Xavier's College Ahmedabad &middot; National Board of Higher Mathematics</small>
-        </li>
-      </ul>
-    </section>
-
-    <!-- ===================== AWARDS ===================== -->
-    <section class="panel" id="awards">
-      <p class="label">Awards, grants &amp; honors</p>
-
-      <div class="entry">
-        <div class="entry-when">2026</div>
-        <div>
-          <h3 class="entry-title">PQI Community Collaboration Award</h3>
-          <p class="entry-where">For Dynamic Programming &amp; Reinforcement Learning for Quantum Network Control (DyReQNet-Ctrl)</p>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-when">2020&ndash;21</div>
-        <div>
-          <h3 class="entry-title">Academic Excellence Award, IIT Kanpur</h3>
-          <p class="entry-where">Highest CGPA in the department</p>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-when">2019, 2020</div>
-        <div>
-          <h3 class="entry-title">National Graduate Physics Examination</h3>
-          <p class="entry-where">National Topper, top 25 of ~11,000 (2020) &middot; State Topper, top 1% (2019)</p>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-when">2019, 2020</div>
-        <div>
-          <h3 class="entry-title">Madhava Mathematics Competition</h3>
-          <p class="entry-where">1st state rank (2020) &middot; 3rd state rank (2019) &middot; HBCSE, Tata Institute of Fundamental Research</p>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-when">2020&ndash;22</div>
-        <div>
-          <h3 class="entry-title">Competitive entrance ranks</h3>
-          <p class="entry-where">All-India Rank 47 of ~15,000 (IIT-JAM) &middot; 46 of ~7,000 (JEST) &middot; 161 (CSIR-NET JRF)</p>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-when">2017</div>
-        <div>
-          <h3 class="entry-title">UPSTSE Fellowship</h3>
-          <p class="entry-where">Uttar Pradesh state government</p>
-        </div>
-      </div>
     </section>
 
     <footer>
@@ -671,36 +675,133 @@
 </div>
 
 <script>
-/* Tab switching. Nothing to edit here. */
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']]
+    },
+    options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+<script>
+/* ============================================================
+   BLOG POSTS — the only list you edit. Newest first.
+   Each entry needs a matching file at  posts/<slug>.md
+   ============================================================ */
+var POSTS = [
+  { slug: 'hello-world', title: 'Hello world', date: 'August 2026' }
+];
+
+/* ---- nothing below here needs editing ---- */
 (function () {
   var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
-  var links  = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
-  if (!panels.length) return;
+  var navs   = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
+  var idxEl  = document.getElementById('blog-index');
+  var listEl = document.getElementById('blog-list');
+  var postEl = document.getElementById('blog-post');
+  var cache  = {};
 
-  function show(id) {
+  function showPanel(id) {
     var match = panels.filter(function (p) { return p.id === id; })[0] || panels[0];
     panels.forEach(function (p) { p.classList.toggle('is-active', p === match); });
-    links.forEach(function (a) {
+    navs.forEach(function (a) {
       if (a.getAttribute('href') === '#' + match.id) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
   }
 
-  function fromHash() { show((location.hash || '').replace('#', '')); }
+  function buildList() {
+    if (!POSTS.length) {
+      listEl.innerHTML = '<p class="blog-empty">No posts yet.</p>';
+      return;
+    }
+    listEl.innerHTML = POSTS.map(function (p) {
+      return '<div class="entry">' +
+               '<div class="entry-when">' + p.date + '</div>' +
+               '<div><a class="post-link" href="#blog/' + p.slug + '">' + p.title + '</a></div>' +
+             '</div>';
+    }).join('');
+  }
 
-  fromHash();
+  function typeset(el) {
+    if (!window.MathJax) return;
+    var run = function () { return window.MathJax.typesetPromise([el]); };
+    if (window.MathJax.startup && window.MathJax.startup.promise) {
+      window.MathJax.startup.promise.then(run).catch(function () {});
+    } else if (window.MathJax.typesetPromise) {
+      run().catch(function () {});
+    }
+  }
+
+  /* Pull math out before Markdown runs, so underscores and
+     backslashes inside equations survive, then put it back. */
+  function render(md) {
+    var math = [];
+    md = md.replace(
+      /\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$[^\n$]+?\$/g,
+      function (m) { math.push(m); return '@@MATH' + (math.length - 1) + '@@'; }
+    );
+    var html = window.marked
+      ? window.marked.parse(md)
+      : '<pre>' + md.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</pre>';
+    return html.replace(/@@MATH(\d+)@@/g, function (_, i) { return math[+i]; });
+  }
+
+  function openPost(slug) {
+    var meta = POSTS.filter(function (p) { return p.slug === slug; })[0];
+    idxEl.hidden = true;
+    postEl.hidden = false;
+    document.getElementById('post-title').textContent = meta ? meta.title : 'Post not found';
+    document.getElementById('post-date').textContent  = meta ? meta.date : '';
+    var body = document.getElementById('post-body');
+
+    if (!meta) { body.innerHTML = '<p>No post with that name.</p>'; return; }
+    if (cache[slug]) { body.innerHTML = cache[slug]; typeset(body); return; }
+
+    body.innerHTML = '<p class="blog-empty">Loading&hellip;</p>';
+    fetch('posts/' + slug + '.md')
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      })
+      .then(function (md) {
+        cache[slug] = render(md);
+        body.innerHTML = cache[slug];
+        typeset(body);
+      })
+      .catch(function () {
+        body.innerHTML = '<p class="blog-empty">Could not load <code>posts/' +
+                         slug + '.md</code>. Check the file exists in the repo.</p>';
+      });
+  }
+
+  function closePost() {
+    idxEl.hidden = false;
+    postEl.hidden = true;
+  }
+
+  function route() {
+    var h = (location.hash || '').replace(/^#/, '');
+    if (h.indexOf('blog/') === 0) {
+      showPanel('blog');
+      openPost(h.slice(5));
+    } else {
+      closePost();
+      showPanel(h);
+    }
+  }
+
+  buildList();
+  route();
   window.addEventListener('hashchange', function () {
-    fromHash();
+    route();
     window.scrollTo(0, 0);
   });
 })();
 </script>
-
-<!-- OPTIONAL: delete the two comment markers below to render LaTeX.
-     Then you can write $E = mc^2$ or $$...$$ anywhere on the page.
-<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
--->
 
 </body>
 </html>
