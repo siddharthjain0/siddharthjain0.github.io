@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  PERSONAL ACADEMIC HOMEPAGE — single file, nothing to install.
+  Everything you need to change is marked  <!-- EDIT -->
+  Checklist:
+    1. Line ~20  : page title + description (shows up in Google)
+    2. Search for "Your Name" and replace everywhere
+    3. Rewrite the RESEARCH section in your own words
+    4. Replace the placeholder publications with your real ones
+    5. Drop photo.jpg and cv.pdf next to this file
+  Optional: to render LaTeX math, uncomment the MathJax line
+  near the bottom, then write $...$ or $$...$$ anywhere.
+  ============================================================
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- EDIT: title and description -->
+<title>Your Name — Physics</title>
+<meta name="description" content="PhD candidate in physics at Your University. Research in condensed matter theory.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#fcfcfd;
+    --ink:#14161b;
+    --slate:#5c6472;
+    --rule:#e4e6ea;
+    --accent:#3538cd;
+    --accent-wash:rgba(53,56,205,.07);
+    --serif:"Spectral",Charter,Georgia,"Times New Roman",serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#101216; --ink:#e7e9ee; --slate:#959dac;
+      --rule:#252931; --accent:#9aa1ff; --accent-wash:rgba(154,161,255,.10);
+    }
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font:400 1.0625rem/1.68 var(--serif);
+    font-feature-settings:"onum" 1;
+  }
+
+  .page{
+    max-width:64rem;
+    margin:0 auto;
+    padding:clamp(2.5rem,7vw,5.5rem) clamp(1.25rem,5vw,3rem) 4rem;
+    display:grid;
+    grid-template-columns:14rem 1fr;
+    gap:clamp(2rem,6vw,5rem);
+    align-items:start;
+  }
+  @media (max-width:820px){
+    .page{grid-template-columns:1fr;gap:2.75rem}
+  }
+
+  /* ---------- left rail ---------- */
+  .rail{position:sticky;top:clamp(2.5rem,7vw,5.5rem)}
+  @media (max-width:820px){.rail{position:static}}
+
+  .rail-name{
+    font:300 1.5rem/1.2 var(--serif);
+    letter-spacing:-.015em;
+    margin:0 0 .35rem;
+  }
+  .rail-role{
+    font:400 .8125rem/1.5 var(--mono);
+    color:var(--slate);
+    margin:0 0 1.75rem;
+  }
+  .rail-photo{
+    display:block;width:100%;height:auto;
+    margin:0 0 1.75rem;
+    background:var(--accent-wash);
+    aspect-ratio:1/1;
+    object-fit:cover;
+  }
+  .links{list-style:none;margin:0;padding:0}
+  .links li{margin-bottom:.5rem}
+  .links a{
+    font:500 .75rem/1.4 var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.11em;
+    color:var(--slate);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+    transition:color .15s,border-color .15s;
+  }
+  .links a:hover,.links a:focus-visible{color:var(--accent);border-color:var(--accent)}
+
+  /* ---------- main flow ---------- */
+  section{margin-bottom:clamp(3rem,7vw,4.5rem)}
+  section:last-of-type{margin-bottom:0}
+
+  .label{
+    font:500 .6875rem/1 var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--slate);
+    margin:0 0 1.25rem;
+    padding-bottom:.6rem;
+    border-bottom:1px solid var(--rule);
+  }
+
+  /* the hero: a thesis sentence with real physics set into it */
+  .thesis{
+    font:300 clamp(1.75rem,4.6vw,2.875rem)/1.22 var(--serif);
+    letter-spacing:-.022em;
+    margin:0 0 1.75rem;
+    max-width:34ch;
+  }
+  .eq{
+    font-family:var(--serif);
+    font-style:italic;
+    white-space:nowrap;
+    color:var(--accent);
+    background:var(--accent-wash);
+    padding:.05em .3em;
+    border-radius:2px;
+  }
+  .eq .up{font-style:normal}
+  .eq sub{font-style:normal;font-size:.62em;letter-spacing:.02em}
+
+  p{margin:0 0 1.15rem;max-width:62ch}
+  p:last-child{margin-bottom:0}
+  .lede{color:var(--slate)}
+
+  a{color:var(--accent)}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+  /* ---------- publications: year in the margin ---------- */
+  .pub{
+    display:grid;
+    grid-template-columns:4rem 1fr;
+    gap:0 1.5rem;
+    padding:1.15rem 0;
+    border-top:1px solid transparent;
+  }
+  .pub:not(:first-of-type){border-top-color:var(--rule)}
+  @media (max-width:520px){
+    .pub{grid-template-columns:1fr;gap:.4rem}
+  }
+  .pub-year{
+    font:500 .8125rem/1.9 var(--mono);
+    color:var(--slate);
+    letter-spacing:.04em;
+  }
+  .pub-title{
+    margin:0 0 .3rem;
+    font:600 1.0625rem/1.45 var(--serif);
+    letter-spacing:-.005em;
+  }
+  .pub-meta{
+    margin:0 0 .55rem;
+    font-size:.9375rem;
+    color:var(--slate);
+    line-height:1.55;
+  }
+  .pub-meta .me{color:var(--ink);font-weight:600}
+  .pub-meta em{font-style:italic}
+  .pub-links a{
+    font:500 .6875rem/1 var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    text-decoration:none;
+    border:1px solid var(--rule);
+    padding:.35rem .55rem;
+    margin-right:.35rem;
+    display:inline-block;
+    transition:border-color .15s,background .15s;
+  }
+  .pub-links a:hover{border-color:var(--accent);background:var(--accent-wash)}
+
+  /* ---------- compact two-column lists ---------- */
+  .rows{list-style:none;margin:0;padding:0}
+  .rows li{
+    display:grid;
+    grid-template-columns:4rem 1fr;
+    gap:0 1.5rem;
+    padding:.7rem 0;
+    border-top:1px solid var(--rule);
+  }
+  .rows li:first-child{border-top:none;padding-top:0}
+  @media (max-width:520px){
+    .rows li{grid-template-columns:1fr;gap:.2rem}
+  }
+  .rows .when{font:400 .8125rem/1.8 var(--mono);color:var(--slate)}
+  .rows .what{margin:0}
+  .rows .what small{display:block;color:var(--slate);font-size:.9375rem}
+
+  footer{
+    margin-top:clamp(3.5rem,8vw,5rem);
+    padding-top:1.25rem;
+    border-top:1px solid var(--rule);
+    font:400 .8125rem/1.6 var(--mono);
+    color:var(--slate);
+  }
+
+  /* ---------- restrained load-in ---------- */
+  .rise{animation:rise .6s cubic-bezier(.22,.68,.3,1) both}
+  .rise:nth-of-type(2){animation-delay:.06s}
+  .rise:nth-of-type(3){animation-delay:.12s}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    .rise{animation:none}
+    *{transition:none!important}
+  }
+
+  /* ---------- printing (people print your CV page) ---------- */
+  @media print{
+    :root{--paper:#fff;--ink:#000;--slate:#444;--accent:#000;--accent-wash:none}
+    .page{display:block;max-width:none;padding:0}
+    .rail-photo,.pub-links{display:none}
+    .eq{background:none;padding:0}
+  }
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- ============ LEFT RAIL ============ -->
+  <aside class="rail">
+    <!-- EDIT: your name, title, department -->
+    <h1 class="rail-name">Your Name</h1>
+    <p class="rail-role">PhD candidate<br>Department of Physics<br>Your University</p>
+
+    <!-- EDIT: save a square photo as photo.jpg next to this file.
+         Delete this line if you'd rather not have a photo. -->
+    <img class="rail-photo" src="photo.jpg" alt="Portrait of Your Name">
+
+    <!-- EDIT: delete any link you don't have yet -->
+    <ul class="links">
+      <li><a href="mailto:you@university.edu">Email</a></li>
+      <li><a href="cv.pdf">CV (PDF)</a></li>
+      <li><a href="https://arxiv.org/a/yourname_1">arXiv</a></li>
+      <li><a href="https://scholar.google.com/">Google&nbsp;Scholar</a></li>
+      <li><a href="https://orcid.org/0000-0000-0000-0000">ORCID</a></li>
+      <li><a href="https://github.com/yourusername">GitHub</a></li>
+    </ul>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+
+    <!-- ---- research ---- -->
+    <section class="rise">
+      <!-- EDIT: one sentence a physicist in another subfield would understand.
+           The highlighted bit is meant to be a real relation from your work —
+           swap in whatever is characteristic of your problem, or delete the
+           <span> and just write plain words. -->
+      <h2 class="thesis">
+        I study how quantum systems reach equilibrium in the regime
+        <span class="eq"><span class="up">ℏ</span><i>ω</i> &#8811; <span class="up">k</span><sub>B</sub><i>T</i></span>.
+      </h2>
+
+      <p class="lede">
+        Two or three sentences on the bigger question: what nobody understands
+        yet, and why it matters outside your subfield. Write it for a first-year
+        grad student, not for your committee.
+      </p>
+      <p>
+        Then get concrete. What do you actually do all day — tensor networks,
+        cryostats, telescope time, lattice simulations? Name the methods and the
+        systems by name, because that is what people search for. Finish with who
+        you work with and on what, and name your advisor.
+      </p>
+    </section>
+
+    <!-- ---- publications ---- -->
+    <section class="rise">
+      <p class="label">Publications</p>
+
+      <!-- EDIT: copy one .pub block per paper. Newest first.
+           Bold your own name with <span class="me">. -->
+      <div class="pub">
+        <div class="pub-year">2026</div>
+        <div>
+          <h3 class="pub-title">Title of your most recent paper goes here</h3>
+          <p class="pub-meta">
+            <span class="me">Your Name</span>, A. Collaborator, B. Advisor<br>
+            <em>Physical Review Letters</em> 136, 010401
+          </p>
+          <p class="pub-links">
+            <a href="#">arXiv:2601.00000</a><a href="#">Journal</a><a href="#">Code</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2025</div>
+        <div>
+          <h3 class="pub-title">A second paper, formatted exactly the same way</h3>
+          <p class="pub-meta">
+            A. Collaborator, <span class="me">Your Name</span>, B. Advisor<br>
+            <em>Physical Review B</em> 111, 054301
+          </p>
+          <p class="pub-links">
+            <a href="#">arXiv:2503.00000</a><a href="#">Journal</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-year">2024</div>
+        <div>
+          <h3 class="pub-title">A preprint that isn't published yet</h3>
+          <p class="pub-meta">
+            <span class="me">Your Name</span>, B. Advisor<br>
+            <em>Submitted</em>
+          </p>
+          <p class="pub-links">
+            <a href="#">arXiv:2411.00000</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- talks ---- -->
+    <section class="rise">
+      <p class="label">Talks &amp; posters</p>
+      <ul class="rows">
+        <!-- EDIT -->
+        <li>
+          <span class="when">Mar 2026</span>
+          <p class="what">Contributed talk, APS Global Physics Summit
+            <small>Los Angeles, CA</small></p>
+        </li>
+        <li>
+          <span class="when">Sep 2025</span>
+          <p class="what">Poster, Gordon Research Conference
+            <small>Ventura, CA</small></p>
+        </li>
+        <li>
+          <span class="when">Jun 2025</span>
+          <p class="what">Invited seminar, Institute for Theoretical Physics
+            <small>Host institution</small></p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ---- teaching ---- -->
+    <section class="rise">
+      <p class="label">Teaching</p>
+      <ul class="rows">
+        <!-- EDIT — delete this whole section if it's not useful to you -->
+        <li>
+          <span class="when">2025–26</span>
+          <p class="what">Teaching assistant, Quantum Mechanics II
+            <small>Recitations and problem sessions, ~40 students</small></p>
+        </li>
+        <li>
+          <span class="when">2024</span>
+          <p class="what">Teaching assistant, Introductory Mechanics Lab
+            <small>Two sections</small></p>
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      <!-- EDIT -->
+      Office 000, Physics Building &middot; you@university.edu<br>
+      Last updated August 2026
+    </footer>
+
+  </main>
+</div>
+
+<!-- OPTIONAL: delete the surrounding comment markers on the two lines below
+     to render LaTeX. Then you can write $E = mc^2$ or $$...$$ anywhere.
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+-->
+
+</body>
+</html>
