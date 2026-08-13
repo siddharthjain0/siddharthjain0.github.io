@@ -3,7 +3,7 @@ it escape *faster*. This project worked out when that happens, and what the
 optimal reset rate is.
 
 
-![Conical-tube geometry with the initial position, the reset position, and the absorbing/reflecting end](figures/Figure1.pdf)
+![Conical-tube geometry with the initial position, the reset position, and the absorbing/reflecting end](figures/Figure1-1.png)
 *The particle starts from the initial position at $x_0$ and is reset to a fixed
 position $x_r$ at a rate $r$, from where it resumes diffusion until the next
 reset.*
