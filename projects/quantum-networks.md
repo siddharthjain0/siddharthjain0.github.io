@@ -8,6 +8,15 @@ spin model.
 
 ![The giant component of emergent bipartite network for 512x512 lattice](figures/network-visual.png)
 *Averaged over 50 disorder realizations.*
+
+![The giant component of emergent multipartite network for 512x512 lattice](figures/hypergraph-visual.png)
+*Averaged over 50 disorder realizations.*
+
+![The hyperdegree distribution on LCC of multipartite network for 4096x4096 lattice](figures/hyperdegree.png)
+*Averaged over 50 disorder realizations.*
+
+![The hyperedge size distribution on LCC of multipartite network for 4096x4096 lattice](figures/size-distribution.png)
+*Averaged over 50 disorder realizations.*
 <!--
   ============================================================
   This page is yours to expand. The paragraph above is the same
