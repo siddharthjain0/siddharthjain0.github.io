@@ -114,6 +114,7 @@
     --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --gutter:clamp(1.25rem,5vw,3rem);
     --measure:46rem;
+    --fig-max:46rem;   /* biggest any figure gets — lower to shrink them all */
   }
 
   /* The script in <head> always sets data-theme, so the dark palette
@@ -360,6 +361,24 @@
   .entry-body{font-size:1.0625rem;line-height:1.7;margin:0 0 .85rem;max-width:var(--measure)}
   .entry-body:last-child{margin-bottom:0}
 
+  /* ---------- a figure placed directly in this file ----------
+     (images inside .md pages are styled separately, further down)
+     <figure class="figure">
+       <img src="figures/thing.png" alt="what it shows">
+       <figcaption>Caption.</figcaption>
+     </figure>
+  ------------------------------------------------------------- */
+  .figure{margin:1.5rem 0 0;max-width:var(--measure)}
+  .figure img{
+    display:block;width:100%;height:auto;
+    border:1px solid var(--rule);
+  }
+  .figure figcaption{
+    font:400 .8125rem/1.6 var(--mono);
+    color:var(--slate);
+    margin-top:.7rem;
+  }
+
   /* ---------- publications ---------- */
   .pub{
     display:grid;
@@ -521,14 +540,21 @@
     display:block;max-width:100%;height:auto;
     margin:2rem 0;border:1px solid var(--rule);
   }
-  /* a figure caption: write the image on its own paragraph, then
-     an *italic line* directly under it */
-  .post-body img + em,.post-body em.caption{
-    display:block;
-    font:400 .875rem/1.6 var(--mono);
-    font-style:normal;
+  /* figures: an image line followed by an *italic line* becomes
+     <figure><img><figcaption>, handled in render() below */
+  .post-body figure{margin:2.25rem 0;max-width:min(100%,var(--fig-max))}
+  .post-body figure img{margin:0}
+  /* per-figure sizing: ![alt](file.png "small") in the Markdown */
+  .post-body figure.fig-small{max-width:min(100%,20rem)}
+  .post-body figure.fig-medium{max-width:min(100%,30rem)}
+  .post-body figure.fig-large{max-width:100%}
+  /* uncomment to centre figures narrower than the text column
+  .post-body figure{margin-left:auto;margin-right:auto} */
+  .post-body figcaption{
+    font:400 .8125rem/1.6 var(--mono);
     color:var(--slate);
-    margin:-1.25rem 0 2rem;
+    margin-top:.7rem;
+    max-width:none;
   }
   .post-body hr{border:none;border-top:1px solid var(--rule);margin:2.75rem 0}
   .post-body table{border-collapse:collapse;margin:0 0 1.25rem;font-size:1rem}
@@ -695,6 +721,16 @@
               spinon-excitation dynamics, and probed the excitation's edge
               behavior on the lattice in Python.
             </p>
+
+            <!-- A FIGURE GOES HERE — inside this inner <div>, after the
+                 body paragraphs. Put the image file in a figures/ folder
+                 next to index.html, then delete these comment markers.
+
+            <figure class="figure">
+              <img src="figures/spinon-edge.png" alt="Spinon density at the lattice edge">
+              <figcaption>Spinon density at the lattice edge over time.</figcaption>
+            </figure>
+            -->
           </div>
         </div>
 
@@ -1143,6 +1179,25 @@ var PROJECTS = [
       /\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$[^\n$]+?\$/g,
       function (m) { math.push(m); return '@@MATH' + (math.length - 1) + '@@'; }
     );
+
+    /* An image line, optionally followed by an *italic line*, becomes a
+       real <figure> with a <figcaption>. Emitted with blank lines around
+       it so Markdown treats it as a standalone block either way — this
+       is why you no longer need blank lines between your figures. */
+    function attr(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
+    md = md.replace(
+      /^[ \t]*!\[([^\]]*)\]\(\s*([^)\s]+)(?:\s+"([^"]*)")?\s*\)[ \t]*(?:(?:\r?\n[ \t]*){1,2}\*[ \t]*([^\n]*?)[ \t]*\*[ \t]*)?$/gm,
+      function (_, alt, src, size, cap) {
+        size = (size || '').trim();
+        var cls = /^(small|medium|large)$/.test(size) ? ' class="fig-' + size + '"' : '';
+        return '\n\n<figure' + cls + '><img src="' + attr(src) + '" alt="' + attr(alt) + '">' +
+               (cap ? '<figcaption>' + attr(cap) + '</figcaption>' : '') +
+               '</figure>\n\n';
+      }
+    );
+
     var html = window.marked
       ? window.marked.parse(md)
       : '<pre>' + md.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</pre>';
