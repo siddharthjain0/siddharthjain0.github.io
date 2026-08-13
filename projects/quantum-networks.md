@@ -6,6 +6,8 @@ exploit these entanglement resources by achieving network topologies suited to
 tasks such as quantum communication and routing, informed by the underlying
 spin model.
 
+![The giant component of emergent bipartite network for 512x512 lattice](figures/network-visual.png)
+*Averaged over 50 disorder realizations.*
 <!--
   ============================================================
   This page is yours to expand. The paragraph above is the same
