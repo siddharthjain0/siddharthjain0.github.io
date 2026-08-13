@@ -10,18 +10,18 @@ All figures below are averaged over 50 disorder realizations.
 
 ## Emergent network topology
 
-![Giant component of the emergent bipartite network, 512×512 lattice](figures/network_topological.png "tiny")
+![Giant component of the emergent bipartite network, 512×512 lattice](figures/network_topological.png "small")
 *Giant component of the emergent bipartite network, 512×512 lattice.*
 
-![Giant component of the emergent multipartite network, 512×512 lattice](figures/hypergraph_topological.png)
+![Giant component of the emergent multipartite network, 512×512 lattice](figures/hypergraph_topological.png "small")
 *Giant component of the emergent multipartite network, 512×512 lattice.*
 
 ## Distributions on the largest connected component
 
-![Hyperdegree distribution on the LCC of the multipartite network, 4096×4096 lattice](figures/hyperdegree.png)
+![Hyperdegree distribution on the LCC of the multipartite network, 4096×4096 lattice](figures/hyperdegree.png "small")
 *Hyperdegree distribution, 4096×4096 lattice.*
 
-![Hyperedge size distribution on the LCC of the multipartite network, 4096×4096 lattice](figures/size_distribution.png)
+![Hyperedge size distribution on the LCC of the multipartite network, 4096×4096 lattice](figures/size_distribution.png "small")
 *Hyperedge size distribution, 4096×4096 lattice.*
 
 <!--
