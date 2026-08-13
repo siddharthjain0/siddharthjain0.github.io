@@ -10,7 +10,7 @@ All figures below are averaged over 50 disorder realizations.
 
 ## Emergent network topology
 
-![Giant component of the emergent bipartite network, 512×512 lattice](figures/network_topological.png "small")
+![Giant component of the emergent bipartite network, 512×512 lattice](figures/network_topological.png "tiny")
 *Giant component of the emergent bipartite network, 512×512 lattice.*
 
 ![Giant component of the emergent multipartite network, 512×512 lattice](figures/hypergraph_topological.png)
