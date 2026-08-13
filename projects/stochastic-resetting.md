@@ -17,3 +17,5 @@ Published in the *Journal of Chemical Physics* — see
   Expand freely. See projects/quantum-networks.md for the full set of
   Markdown, LaTeX and figure examples.
 -->
+
+The particle starts from the initial position at $x_0$ and is reset to a fixed position $x_r$ at a rate $r$, from where it resumes diffusion until the next reset.
