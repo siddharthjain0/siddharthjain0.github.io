@@ -7,31 +7,37 @@
     Each tab is  <section class="panel" id="something">
     Each menu item is  <li><a href="#something">
     The id and the href must match, lowercase, no spaces.
-    To add a tab, copy one of each and change both strings.
-    To delete one, delete both.
+    To delete a tab, delete both.
 
   !! WHEN DELETING CONTENT FROM A TAB, KEEP ITS </section> !!
-    Every <section class="panel"> must have a matching
-    </section> before the next one starts. If one goes
-    missing, all the tabs below it stop showing.
 
-  TO ADD A BLOG POST  (two steps, no HTML needed)
-    1. Create a file  posts/your-slug.md  and write in Markdown
-    2. Add one line to the POSTS list in the script at the
-       bottom of this file:
-         { slug:'your-slug', title:'Your title' },
-    Newest first. Add  date:'Aug 2026'  if you want a date shown.
-    LaTeX works in posts: $E=mc^2$ or $$...$$
-    A contents sidebar is built automatically from your ##
-    headings once a post has 3 or more of them.
+  TWO KINDS OF WRITING, SAME SYSTEM
+    Blog posts live in   posts/<slug>.md    -> POSTS list
+    Project pages live in projects/<slug>.md -> PROJECTS list
+    Both lists are at the bottom of this file. Both use
+    Markdown, both render LaTeX, and both get an automatic
+    contents sidebar once they have 3 or more ## headings.
+
+  TO ADD A BLOG POST
+    1. Create  posts/my-slug.md
+    2. Add  { slug:'my-slug', title:'My title' },  to POSTS
+
+  TO GIVE A PROJECT ITS OWN PAGE
+    1. Create  projects/my-slug.md
+    2. Add  { slug:'my-slug', title:'...', date:'...' },  to PROJECTS
+    3. Wrap that project's title in the Research tab:
+       <h3 class="entry-title"><a href="#research/my-slug">Title</a></h3>
+
+  IMAGE PATHS — IMPORTANT
+    Markdown is loaded into this page, so image paths are
+    relative to index.html, NOT to the .md file. Put fig.png
+    next to index.html and write  ![caption](fig.png)
 
   FILES THIS PAGE EXPECTS IN THE SAME REPO
-    photo.jpg          (header thumbnail)
-    photo-full.jpg     (shown when the photo is clicked)
+    photo.jpg  photo-full.jpg  og-image.jpg  favicon.png
     SiddharthJain_CV.pdf
-    og-image.jpg       (link-preview picture, 1200x630)
-    favicon.png        (browser tab icon)
     posts/anyons.md
+    projects/*.md
   ============================================================
 -->
 <html lang="en">
@@ -58,6 +64,21 @@
 <link rel="icon" href="favicon.png" sizes="180x180" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 
+<!-- Runs before anything paints, so the page never flashes the
+     wrong colours. Storage is wrapped because some browsers
+     block it in private mode. -->
+<script>
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('theme'); } catch (e) {}
+  if (t !== 'light' && t !== 'dark') {
+    t = (window.matchMedia &&
+         window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -70,16 +91,25 @@
     --rule:#e4e6ea;
     --accent:#3538cd;
     --accent-wash:rgba(53,56,205,.07);
+    --shadow:rgba(20,22,27,.14);
     --serif:"Spectral",Charter,Georgia,"Times New Roman",serif;
     --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --gutter:clamp(1.25rem,5vw,3rem);
     --measure:46rem;   /* how wide prose is allowed to run */
   }
+  /* if JavaScript is off, still respect the system setting */
   @media (prefers-color-scheme:dark){
-    :root{
+    :root:not([data-theme="light"]){
       --paper:#0f1115; --ink:#e7e9ee; --slate:#959dac;
       --rule:#242830; --accent:#9aa1ff; --accent-wash:rgba(154,161,255,.10);
+      --shadow:rgba(0,0,0,.5);
     }
+  }
+  /* an explicit choice always wins — must come after the query */
+  :root[data-theme="dark"]{
+    --paper:#0f1115; --ink:#e7e9ee; --slate:#959dac;
+    --rule:#242830; --accent:#9aa1ff; --accent-wash:rgba(154,161,255,.10);
+    --shadow:rgba(0,0,0,.5);
   }
 
   *{box-sizing:border-box}
@@ -106,7 +136,6 @@
     padding:clamp(2.25rem,6vw,4rem) 0 clamp(1.5rem,3vw,2.25rem);
   }
   .id{display:flex;align-items:center;gap:1.35rem}
-  /* the photo is a button so it can be clicked to enlarge */
   .portrait-btn{
     display:block;
     flex:0 0 6.5rem;
@@ -115,9 +144,7 @@
     cursor:zoom-in;
   }
   .portrait{
-    display:block;
-    width:100%;
-    height:auto;
+    display:block;width:100%;height:auto;
     border:1px solid var(--rule);
     transition:border-color .18s,transform .18s,box-shadow .18s;
   }
@@ -125,36 +152,12 @@
   .portrait-btn:focus-visible .portrait{
     border-color:var(--accent);
     transform:translateY(-3px);
-    box-shadow:0 8px 20px rgba(20,22,27,.14);
+    box-shadow:0 8px 20px var(--shadow);
   }
   .portrait-btn:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
   @media (max-width:520px){
     .portrait-btn{flex:0 0 4.75rem}
   }
-
-  /* ---------- click-to-enlarge overlay ---------- */
-  .lightbox{
-    position:fixed;inset:0;z-index:50;
-    display:flex;align-items:center;justify-content:center;
-    padding:clamp(1rem,4vw,3rem);
-    background:rgba(10,11,14,.9);
-    cursor:zoom-out;
-  }
-  .lightbox[hidden]{display:none}
-  .lightbox img{
-    max-width:min(100%,62rem);
-    max-height:100%;
-    width:auto;height:auto;
-    box-shadow:0 24px 70px rgba(0,0,0,.55);
-  }
-  .lightbox-close{
-    position:absolute;top:.75rem;right:1.25rem;
-    background:none;border:none;color:#fff;
-    font:300 2.5rem/1 var(--serif);
-    cursor:pointer;padding:.25rem .6rem;opacity:.7;
-    transition:opacity .15s;
-  }
-  .lightbox-close:hover,.lightbox-close:focus-visible{opacity:1}
   .name{
     font:300 clamp(1.85rem,4.5vw,2.75rem)/1.08 var(--serif);
     letter-spacing:-.028em;
@@ -181,16 +184,37 @@
   }
   .links a:hover,.links a:focus-visible{color:var(--accent);border-color:var(--accent)}
 
+  /* ---------- click-to-enlarge overlay ---------- */
+  .lightbox{
+    position:fixed;inset:0;z-index:50;
+    display:flex;align-items:center;justify-content:center;
+    padding:clamp(1rem,4vw,3rem);
+    background:rgba(10,11,14,.9);
+    cursor:zoom-out;
+  }
+  .lightbox[hidden]{display:none}
+  .lightbox img{
+    max-width:min(100%,62rem);max-height:100%;
+    width:auto;height:auto;
+    box-shadow:0 24px 70px rgba(0,0,0,.55);
+  }
+  .lightbox-close{
+    position:absolute;top:.75rem;right:1.25rem;
+    background:none;border:none;color:#fff;
+    font:300 2.5rem/1 var(--serif);
+    cursor:pointer;padding:.25rem .6rem;opacity:.7;
+    transition:opacity .15s;
+  }
+  .lightbox-close:hover,.lightbox-close:focus-visible{opacity:1}
+
   /* ---------- sticky top tabs ---------- */
   .navband{
-    position:sticky;
-    top:0;
-    z-index:20;
+    position:sticky;top:0;z-index:20;
     background:var(--paper);
     border-bottom:1px solid var(--rule);
   }
   .nav{
-    display:flex;flex-wrap:wrap;gap:0 2.25rem;
+    display:flex;flex-wrap:wrap;align-items:center;gap:0 2.25rem;
     list-style:none;margin:0;padding:0;
   }
   .nav a{
@@ -207,10 +231,26 @@
   }
   .nav a:hover{color:var(--ink)}
   .nav a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--accent)}
+  .nav-end{margin-left:auto}
   @media (max-width:640px){
     .nav{gap:0 1.2rem}
     .nav a{font-size:.6875rem;letter-spacing:.1em;padding:.95rem 0}
   }
+
+  /* ---------- light / dark switch ---------- */
+  .theme-btn{
+    display:flex;align-items:center;justify-content:center;
+    width:2rem;height:2rem;
+    padding:0;border:1px solid var(--rule);border-radius:50%;
+    background:none;color:var(--slate);cursor:pointer;
+    transition:color .15s,border-color .15s,transform .15s;
+  }
+  .theme-btn:hover{color:var(--accent);border-color:var(--accent);transform:rotate(-18deg)}
+  .theme-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .theme-btn svg{width:1rem;height:1rem;display:block}
+  .theme-btn .ico-sun{display:none}
+  :root[data-theme="dark"] .theme-btn .ico-sun{display:block}
+  :root[data-theme="dark"] .theme-btn .ico-moon{display:none}
 
   main{padding:clamp(2.5rem,5vw,4rem) 0 0}
 
@@ -238,7 +278,6 @@
     border-bottom:1px solid var(--rule);
   }
 
-  /* the one big piece of type on the site */
   /* THE ABOUT HEADLINE SIZE LIVES HERE.
      clamp(smallest, scales-with-window, largest)
      To shrink it further, lower the LAST number (2.25rem). */
@@ -255,7 +294,7 @@
   a{color:var(--accent)}
   a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
-  /* ---------- dated rows: shared by research, teaching, education ---------- */
+  /* ---------- dated rows ---------- */
   .entry{
     display:grid;
     grid-template-columns:9rem 1fr;
@@ -277,6 +316,22 @@
     font:600 1.25rem/1.32 var(--serif);
     letter-spacing:-.014em;
   }
+  /* a project title that has its own page */
+  .entry-title a{
+    color:inherit;text-decoration:none;
+    border-bottom:1px solid transparent;
+    transition:color .15s,border-color .15s;
+  }
+  .entry-title a::after{
+    content:"\00a0\2192";
+    color:var(--slate);
+    font-size:.8em;
+    transition:color .15s;
+  }
+  .entry-title a:hover,.entry-title a:focus-visible{
+    color:var(--accent);border-bottom-color:var(--accent);
+  }
+  .entry-title a:hover::after{color:var(--accent)}
   .entry-where{
     font:400 .8125rem/1.6 var(--mono);
     color:var(--slate);
@@ -313,8 +368,7 @@
   }
   .pub-meta{
     margin:0 0 .85rem;
-    font-size:1rem;
-    line-height:1.6;
+    font-size:1rem;line-height:1.6;
     color:var(--slate);
     max-width:44rem;
   }
@@ -367,7 +421,7 @@
   .post-row{padding:1.75rem 0;border-top:1px solid var(--rule)}
   .post-row:first-child{border-top:none;padding-top:0}
 
-  /* ---------- reading a post: text column + contents rail ---------- */
+  /* ---------- reading view: shared by posts and project pages ---------- */
   .back{
     display:inline-block;
     font:500 .6875rem/1 var(--mono);
@@ -450,6 +504,15 @@
     display:block;max-width:100%;height:auto;
     margin:2rem 0;border:1px solid var(--rule);
   }
+  /* a figure caption: write the image on its own paragraph, then
+     an *italic line* directly under it */
+  .post-body img + em,.post-body em.caption{
+    display:block;
+    font:400 .875rem/1.6 var(--mono);
+    font-style:normal;
+    color:var(--slate);
+    margin:-1.25rem 0 2rem;
+  }
   .post-body hr{border:none;border-top:1px solid var(--rule);margin:2.75rem 0}
   .post-body table{border-collapse:collapse;margin:0 0 1.25rem;font-size:1rem}
   .post-body th,.post-body td{border:1px solid var(--rule);padding:.55rem .8rem;text-align:left}
@@ -516,6 +579,21 @@
       <li><a href="#blog">Blog</a></li>
       <li><a href="#teaching">Teaching</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#misc">Misc</a></li>
+      <li class="nav-end">
+        <button class="theme-btn" id="theme-btn" type="button"
+                aria-label="Switch between light and dark" title="Switch light / dark">
+          <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M20.5 14.8A8.6 8.6 0 0 1 9.2 3.5 8.6 8.6 0 1 0 20.5 14.8z"/>
+          </svg>
+          <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2.4v2M12 19.6v2M4.6 4.6 6 6M18 18l1.4 1.4M2.4 12h2M19.6 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/>
+          </svg>
+        </button>
+      </li>
     </ul>
   </div>
 </div>
@@ -525,7 +603,7 @@
   <div class="inner">
   <main>
 
-    <!-- ===================== ABOUT (education merged in) ===================== -->
+    <!-- ===================== ABOUT ===================== -->
     <section class="panel is-active" id="about">
       <h2 class="display">
         I work in quantum information, communication, and networking.
@@ -567,73 +645,86 @@
 
     <!-- ===================== RESEARCH ===================== -->
     <section class="panel" id="research">
-      <h2 class="label">Research</h2>
 
-      <div class="entry">
-        <div class="entry-when">Mar 2026&ndash;</div>
-        <div>
-          <h3 class="entry-title">Quantum networks from spin models</h3>
-          <p class="entry-where">with Dr. Zhehao Dai &amp; Dr. Kaushik Seshadreesan</p>
-          <p class="entry-body">
-            Investigating physical lattice models — specifically the random
-            transverse-field Ising model — as a testbed for real-world quantum
-            networks. I have characterized the multipartite entanglement
-            structure of the emergent quantum network, and am currently
-            developing methods to optimally exploit these entanglement resources
-            by achieving network topologies suited to tasks such as quantum
-            communication and routing, informed by the underlying spin model.
-          </p>
+      <div id="research-index">
+        <h2 class="label">Research</h2>
+
+        <div class="entry">
+          <div class="entry-when">Mar 2026&ndash;</div>
+          <div>
+            <h3 class="entry-title"><a href="#research/quantum-networks">Quantum networks from spin models</a></h3>
+            <p class="entry-where">with Dr. Zhehao Dai &amp; Dr. Kaushik Seshadreesan</p>
+            <p class="entry-body">
+              Investigating physical lattice models — specifically the random
+              transverse-field Ising model — as a testbed for real-world quantum
+              networks. I have characterized the multipartite entanglement
+              structure of the emergent quantum network, and am currently
+              developing methods to optimally exploit these entanglement resources
+              by achieving network topologies suited to tasks such as quantum
+              communication and routing, informed by the underlying spin model.
+            </p>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-when">May&ndash;Nov 2025</div>
+          <div>
+            <h3 class="entry-title"><a href="#research/hofstadter-hubbard">Hofstadter&ndash;Hubbard model</a></h3>
+            <p class="entry-where">with Dr. Zhehao Dai</p>
+            <p class="entry-body">
+              Studied the fractional quantum Hall effect and Chern&ndash;Simons theory.
+              Implemented a slave-rotor (parton) mean-field treatment of the
+              triangular-lattice Hofstadter&ndash;Hubbard model, built a simulation of
+              spinon-excitation dynamics, and probed the excitation's edge
+              behavior on the lattice in Python.
+            </p>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-when">Aug 2024&ndash;May 2025</div>
+          <div>
+            <h3 class="entry-title"><a href="#research/snail-floquet">Floquet analysis for the SNAIL</a></h3>
+            <p class="entry-where">with Dr. Roger Mong</p>
+            <p class="entry-body">
+              Derived the effective Floquet Hamiltonian of a driven anharmonic
+              oscillator with cubic nonlinearity — the reduced model of a driven
+              SNAIL circuit mode — via a Magnus expansion, and built a numerical
+              time-evolution routine in Python to validate the derivation.
+            </p>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-when">Jan&ndash;Jul 2022</div>
+          <div>
+            <h3 class="entry-title"><a href="#research/stochastic-resetting">Diffusion under stochastic resetting</a></h3>
+            <p class="entry-where">with Dr. Arnab Pal</p>
+            <p class="entry-body">
+              Studied escape properties of a diffusing particle in conical-tube
+              geometry under a stochastic resetting strategy. Modified the
+              Fick&ndash;Jacobs equation to include resetting and solved it analytically
+              for the statistical quantities of the process.
+            </p>
+            <p class="entry-body">
+              Escape times turn out to depend strongly on the resetting rate and
+              the initial position. Counter-intuitively, hindering the process at
+              a finite rate can significantly speed up escape; I identified when
+              this occurs and the optimal reset rate minimizing escape time.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div class="entry">
-        <div class="entry-when">May&ndash;Nov 2025</div>
-        <div>
-          <h3 class="entry-title">Hofstadter&ndash;Hubbard model</h3>
-          <p class="entry-where">with Dr. Zhehao Dai</p>
-          <p class="entry-body">
-            Studied the fractional quantum Hall effect and Chern&ndash;Simons theory.
-            Implemented a slave-rotor (parton) mean-field treatment of the
-            triangular-lattice Hofstadter&ndash;Hubbard model, built a simulation of
-            spinon-excitation dynamics, and probed the excitation's edge
-            behavior on the lattice in Python.
-          </p>
+      <article id="research-view" hidden>
+        <a class="back" href="#research">&larr; All projects</a>
+        <h2 class="post-title js-title"></h2>
+        <p class="post-date js-date"></p>
+        <div class="post-layout">
+          <div class="post-body js-body"></div>
+          <aside class="post-toc js-toc" hidden></aside>
         </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-when">Aug 2024&ndash;May 2025</div>
-        <div>
-          <h3 class="entry-title">Floquet analysis for the SNAIL</h3>
-          <p class="entry-where">with Dr. Roger Mong</p>
-          <p class="entry-body">
-            Derived the effective Floquet Hamiltonian of a driven anharmonic
-            oscillator with cubic nonlinearity — the reduced model of a driven
-            SNAIL circuit mode — via a Magnus expansion, and built a numerical
-            time-evolution routine in Python to validate the derivation.
-          </p>
-        </div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-when">Jan&ndash;Jul 2022</div>
-        <div>
-          <h3 class="entry-title">Diffusion under stochastic resetting</h3>
-          <p class="entry-where">with Dr. Arnab Pal</p>
-          <p class="entry-body">
-            Studied escape properties of a diffusing particle in conical-tube
-            geometry under a stochastic resetting strategy. Modified the
-            Fick&ndash;Jacobs equation to include resetting and solved it analytically
-            for the statistical quantities of the process.
-          </p>
-          <p class="entry-body">
-            Escape times turn out to depend strongly on the resetting rate and
-            the initial position. Counter-intuitively, hindering the process at
-            a finite rate can significantly speed up escape; I identified when
-            this occurs and the optimal reset rate minimizing escape time.
-          </p>
-        </div>
-      </div>
+      </article>
     </section>
 
     <!-- ===================== PUBLICATIONS ===================== -->
@@ -692,13 +783,13 @@
         <div id="blog-list"></div>
       </div>
 
-      <article id="blog-post" hidden>
+      <article id="blog-view" hidden>
         <a class="back" href="#blog">&larr; All posts</a>
-        <h2 class="post-title" id="post-title"></h2>
-        <p class="post-date" id="post-date"></p>
+        <h2 class="post-title js-title"></h2>
+        <p class="post-date js-date"></p>
         <div class="post-layout">
-          <div class="post-body" id="post-body"></div>
-          <aside class="post-toc" id="post-toc" hidden></aside>
+          <div class="post-body js-body"></div>
+          <aside class="post-toc js-toc" hidden></aside>
         </div>
       </article>
     </section>
@@ -774,6 +865,35 @@
       </div>
     </section>
 
+    <!-- ===================== MISC ===================== -->
+    <!--
+      Anything that doesn't belong on the other tabs. Rename the tab by
+      changing BOTH the nav label and this <h2>; the id must stay "misc"
+      unless you change the nav href too.
+
+      Two ready-made patterns you can paste in. The .skill grid is good
+      for short labelled lists; the .entry grid is good for dated things.
+
+      <div class="skill">
+        <div class="skill-cat">Reading</div>
+        <p class="skill-list">Whatever is on the desk right now</p>
+      </div>
+
+      <div class="entry">
+        <div class="entry-when">Aug 2026</div>
+        <div>
+          <h3 class="entry-title">Something that happened</h3>
+          <p class="entry-body">A sentence about it.</p>
+        </div>
+      </div>
+    -->
+    <section class="panel" id="misc">
+      <h2 class="label">Misc</h2>
+      <p class="lede">
+        Notes, links, and things that don't fit on the other tabs. More here soon.
+      </p>
+    </section>
+
   </main>
 
   <footer>
@@ -789,7 +909,36 @@
 </div>
 
 <script>
-/* Click the header photo to see the full uncropped shot. */
+/* ---------- light / dark switch ---------- */
+(function () {
+  var btn = document.getElementById('theme-btn');
+  var root = document.documentElement;
+  if (!btn) return;
+
+  var chosen = false;
+  try { chosen = !!localStorage.getItem('theme'); } catch (e) {}
+
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    chosen = true;
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  /* keep following the system until the visitor picks a side */
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onChange = function (e) {
+      if (!chosen) root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    };
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else if (mq.addListener) mq.addListener(onChange);
+  }
+})();
+</script>
+
+<script>
+/* ---------- click the header photo for the full shot ---------- */
 (function () {
   var btn   = document.getElementById('portrait-btn');
   var box   = document.getElementById('lightbox');
@@ -797,7 +946,6 @@
   var close = document.getElementById('lightbox-close');
   if (!btn || !box || !img) return;
 
-  /* if photo-full.jpg isn't in the repo, fall back to the cropped one */
   img.addEventListener('error', function () {
     if (img.getAttribute('src') !== 'photo.jpg') img.setAttribute('src', 'photo.jpg');
   });
@@ -835,30 +983,54 @@
 
 <script>
 /* ============================================================
-   BLOG POSTS — the only list you edit. Newest first.
-   Each entry needs a matching file at  posts/<slug>.md
-   'date' is optional; leave it out and no date is shown.
+   THE TWO LISTS YOU EDIT. Newest first in both.
+
+   POSTS     -> posts/<slug>.md      shown on the Blog tab
+   PROJECTS  -> projects/<slug>.md   opened from the Research tab
+
+   'date' is optional everywhere; leave it out and none is shown.
    ============================================================ */
 var POSTS = [
   { slug: 'anyons', title: 'The cool maths behind anyons' }
+];
+
+var PROJECTS = [
+  { slug: 'quantum-networks',    title: 'Quantum networks from spin models', date: 'Mar 2026 \u2013 present' },
+  { slug: 'hofstadter-hubbard',  title: 'Hofstadter\u2013Hubbard model',      date: 'May \u2013 Nov 2025' },
+  { slug: 'snail-floquet',       title: 'Floquet analysis for the SNAIL',    date: 'Aug 2024 \u2013 May 2025' },
+  { slug: 'stochastic-resetting',title: 'Diffusion under stochastic resetting', date: 'Jan \u2013 Jul 2022' }
 ];
 
 /* ---- nothing below here needs editing ---- */
 (function () {
   var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
   var navs   = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
-  var idxEl  = document.getElementById('blog-index');
-  var listEl = document.getElementById('blog-list');
-  var postEl = document.getElementById('blog-post');
-  var tocEl  = document.getElementById('post-toc');
   var cache  = {};
 
-  /* Warn in the browser console if a tab has no matching panel,
-     or if a panel ended up nested inside another one. */
+  /* Anything with an index view and a reading view works the same way.
+     Add another by giving it matching <id>-index / <id>-view elements. */
+  var READERS = {
+    blog:     { dir: 'posts',    items: POSTS },
+    research: { dir: 'projects', items: PROJECTS }
+  };
+
+  function parts(key) {
+    var view = document.getElementById(key + '-view');
+    if (!view) return null;
+    return {
+      index: document.getElementById(key + '-index'),
+      view:  view,
+      title: view.querySelector('.js-title'),
+      date:  view.querySelector('.js-date'),
+      body:  view.querySelector('.js-body'),
+      toc:   view.querySelector('.js-toc')
+    };
+  }
+
   (function selfCheck() {
     navs.forEach(function (a) {
       var id = (a.getAttribute('href') || '').replace(/^#/, '');
-      if (id.indexOf('blog/') === 0) return;
+      if (!id || id.indexOf('/') > -1) return;
       if (!document.getElementById(id)) {
         console.warn('Tab "' + a.textContent.trim() + '" points at #' + id +
                      ' but no panel has that id.');
@@ -871,13 +1043,18 @@ var POSTS = [
                      ' — a </section> tag is probably missing.');
       }
     });
+    Object.keys(READERS).forEach(function (k) {
+      READERS[k].items.forEach(function (it) {
+        if (!it.slug || !it.title) console.warn('Entry in ' + k + ' is missing slug or title.');
+      });
+    });
   })();
 
   var BASE_TITLE = document.title;
   var NAME = BASE_TITLE.split('\u2014')[0].trim();
 
-  function setTitle(id, postTitle) {
-    if (postTitle) { document.title = postTitle + ' \u2014 ' + NAME; return; }
+  function setTitle(id, itemTitle) {
+    if (itemTitle) { document.title = itemTitle + ' \u2014 ' + NAME; return; }
     if (!id || id === panels[0].id) { document.title = BASE_TITLE; return; }
     var link = navs.filter(function (a) {
       return a.getAttribute('href') === '#' + id;
@@ -896,6 +1073,8 @@ var POSTS = [
   }
 
   function buildList() {
+    var listEl = document.getElementById('blog-list');
+    if (!listEl) return;
     if (!POSTS.length) {
       listEl.innerHTML = '<p class="blog-empty">No posts yet.</p>';
       return;
@@ -910,8 +1089,8 @@ var POSTS = [
     }).join('');
   }
 
-  /* Markdown + MathJax are ~1 MB and only the blog needs them, so they
-     are fetched the first time a post is opened, not on every visit. */
+  /* Markdown + MathJax are ~1 MB and only the reading views need them,
+     so they are fetched on first use, not on every visit. */
   var libs = null;
   function loadLibs() {
     if (libs) return libs;
@@ -924,7 +1103,7 @@ var POSTS = [
         var s = document.createElement('script');
         s.src = url;
         s.onload = tick;
-        s.onerror = tick;      /* a dead CDN must not hang the post */
+        s.onerror = tick;      /* a dead CDN must not hang the page */
         document.head.appendChild(s);
       });
     });
@@ -955,18 +1134,18 @@ var POSTS = [
     return html.replace(/@@MATH(\d+)@@/g, function (_, i) { return math[+i]; });
   }
 
-  /* Build the contents rail from the post's own ## headings.
-     Uses buttons, not links, so it can never collide with tab routing. */
-  function buildToc(body) {
+  /* Contents rail built from the page's own ## headings. Buttons, not
+     links, so it can never collide with tab routing. */
+  function buildToc(body, tocEl, key) {
     var hs = body.querySelectorAll('h2');
     if (hs.length < 3) { tocEl.hidden = true; tocEl.innerHTML = ''; return; }
-    var parts = ['<p class="toc-label">Contents</p>'];
+    var bits = ['<p class="toc-label">Contents</p>'];
     Array.prototype.forEach.call(hs, function (h, i) {
-      h.id = 'sec-' + i;
-      parts.push('<button class="toc-link" data-t="sec-' + i + '">' +
-                 h.textContent + '</button>');
+      h.id = key + '-sec-' + i;
+      bits.push('<button class="toc-link" data-t="' + h.id + '">' +
+                h.textContent + '</button>');
     });
-    tocEl.innerHTML = parts.join('');
+    tocEl.innerHTML = bits.join('');
     tocEl.hidden = false;
     Array.prototype.forEach.call(tocEl.querySelectorAll('.toc-link'), function (b) {
       b.addEventListener('click', function () {
@@ -976,65 +1155,78 @@ var POSTS = [
     });
   }
 
-  function paint(body, html) {
-    body.innerHTML = html;
-    buildToc(body);
-    typeset(body);
-  }
+  function openItem(key, slug) {
+    var r = READERS[key], p = parts(key);
+    if (!r || !p) return;
+    var meta = r.items.filter(function (x) { return x.slug === slug; })[0];
 
-  function openPost(slug) {
-    var meta = POSTS.filter(function (p) { return p.slug === slug; })[0];
-    idxEl.hidden = true;
-    postEl.hidden = false;
-    document.getElementById('post-title').textContent = meta ? meta.title : 'Post not found';
-    var dateEl = document.getElementById('post-date');
-    dateEl.textContent = (meta && meta.date) ? meta.date : '';
-    dateEl.hidden = !(meta && meta.date);
-    setTitle(null, meta ? meta.title : 'Post not found');
-    var body = document.getElementById('post-body');
+    p.index.hidden = true;
+    p.view.hidden = false;
+    p.title.textContent = meta ? meta.title : 'Not found';
+    p.date.textContent = (meta && meta.date) ? meta.date : '';
+    p.date.hidden = !(meta && meta.date);
+    setTitle(null, meta ? meta.title : 'Not found');
 
     if (!meta) {
-      tocEl.hidden = true;
-      body.innerHTML = '<p class="blog-empty">No post with that name.</p>';
+      p.toc.hidden = true;
+      p.body.innerHTML = '<p class="blog-empty">Nothing here by that name.</p>';
       return;
     }
-    if (cache[slug]) { paint(body, cache[slug]); return; }
 
-    tocEl.hidden = true;
-    body.innerHTML = '<p class="blog-empty">Loading&hellip;</p>';
+    var id = key + '/' + slug;
+    if (cache[id]) {
+      p.body.innerHTML = cache[id];
+      buildToc(p.body, p.toc, key);
+      typeset(p.body);
+      return;
+    }
+
+    p.toc.hidden = true;
+    p.body.innerHTML = '<p class="blog-empty">Loading&hellip;</p>';
     Promise.all([
       loadLibs(),
-      fetch('posts/' + slug + '.md').then(function (r) {
-        if (!r.ok) throw new Error(r.status);
-        return r.text();
+      fetch(r.dir + '/' + slug + '.md').then(function (res) {
+        if (!res.ok) throw new Error(res.status);
+        return res.text();
       })
     ])
-      .then(function (res) {
-        cache[slug] = render(res[1]);
-        paint(body, cache[slug]);
+      .then(function (out) {
+        cache[id] = render(out[1]);
+        p.body.innerHTML = cache[id];
+        buildToc(p.body, p.toc, key);
+        typeset(p.body);
       })
       .catch(function () {
-        body.innerHTML = '<p class="blog-empty">Could not load <code>posts/' +
-                         slug + '.md</code>. Check the file exists in the repo.</p>';
+        p.body.innerHTML = '<p class="blog-empty">Could not load <code>' +
+                           r.dir + '/' + slug + '.md</code>. Check the file exists in the repo.</p>';
       });
   }
 
-  function closePost() {
-    idxEl.hidden = false;
-    postEl.hidden = true;
-    tocEl.hidden = true;
+  function closeAll() {
+    Object.keys(READERS).forEach(function (key) {
+      var p = parts(key);
+      if (!p) return;
+      p.index.hidden = false;
+      p.view.hidden = true;
+      p.toc.hidden = true;
+    });
   }
 
   function route() {
     var h = (location.hash || '').replace(/^#/, '');
-    if (h.indexOf('blog/') === 0) {
-      showPanel('blog');
-      openPost(h.slice(5));
-    } else {
-      closePost();
-      showPanel(h);
-      if (h === 'blog') loadLibs();   /* warm the libraries on the index */
+    var cut = h.indexOf('/');
+    if (cut > 0) {
+      var key = h.slice(0, cut), slug = h.slice(cut + 1);
+      if (READERS[key] && slug) {
+        closeAll();
+        showPanel(key);
+        openItem(key, slug);
+        return;
+      }
     }
+    closeAll();
+    showPanel(h);
+    if (READERS[h]) loadLibs();   /* warm the libraries on an index */
   }
 
   buildList();
