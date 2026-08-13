@@ -33,6 +33,10 @@
     relative to index.html, NOT to the .md file. Put fig.png
     next to index.html and write  ![caption](fig.png)
 
+  FIGURE SIZE
+    ![alt](figures/x.png "small")   tiny | small | medium | large
+    Sizes are set by --fig-* in :root. See the FIGURES block in CSS.
+
   FILES THIS PAGE EXPECTS IN THE SAME REPO
     photo.jpg  photo-full.jpg  og-image.jpg  favicon.png
     SiddharthJain_CV.pdf
@@ -114,7 +118,14 @@
     --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --gutter:clamp(1.25rem,5vw,3rem);
     --measure:46rem;
-    --fig-max:46rem;   /* biggest any figure gets — lower to shrink them all */
+    /* ---- FIGURE SIZES: TWEAK THESE FOUR NUMBERS, NOTHING ELSE ----
+       --fig-max is what a figure gets with no size keyword.
+       The other three are the named sizes. Same scale is used by
+       Markdown figures AND figures written by hand in this file. */
+    --fig-max:46rem;      /* default, and "large" */
+    --fig-medium:30rem;   /* "medium" */
+    --fig-small:20rem;    /* "small"  */
+    --fig-tiny:13rem;     /* "tiny"   */
   }
 
   /* The script in <head> always sets data-theme, so the dark palette
@@ -361,24 +372,6 @@
   .entry-body{font-size:1.0625rem;line-height:1.7;margin:0 0 .85rem;max-width:var(--measure)}
   .entry-body:last-child{margin-bottom:0}
 
-  /* ---------- a figure placed directly in this file ----------
-     (images inside .md pages are styled separately, further down)
-     <figure class="figure">
-       <img src="figures/thing.png" alt="what it shows">
-       <figcaption>Caption.</figcaption>
-     </figure>
-  ------------------------------------------------------------- */
-  .figure{margin:1.5rem 0 0;max-width:var(--measure)}
-  .figure img{
-    display:block;width:100%;height:auto;
-    border:1px solid var(--rule);
-  }
-  .figure figcaption{
-    font:400 .8125rem/1.6 var(--mono);
-    color:var(--slate);
-    margin-top:.7rem;
-  }
-
   /* ---------- publications ---------- */
   .pub{
     display:grid;
@@ -540,22 +533,35 @@
     display:block;max-width:100%;height:auto;
     margin:2rem 0;border:1px solid var(--rule);
   }
-  /* figures: an image line followed by an *italic line* becomes
-     <figure><img><figcaption>, handled in render() below */
-  .post-body figure{margin:2.25rem 0;max-width:min(100%,var(--fig-max))}
-  .post-body figure img{margin:0}
-  /* per-figure sizing: ![alt](file.png "small") in the Markdown */
-  .post-body figure.fig-small{max-width:min(100%,20rem)}
-  .post-body figure.fig-medium{max-width:min(100%,30rem)}
-  .post-body figure.fig-large{max-width:100%}
-  /* uncomment to centre figures narrower than the text column
-  .post-body figure{margin-left:auto;margin-right:auto} */
-  .post-body figcaption{
+  /* ================= FIGURES — ONE SYSTEM, TWO WAYS IN =================
+     In a .md page:   ![alt](figures/x.png "small")
+                      *Caption line.*
+     By hand in this file:
+                      <figure class="figure fig-small">
+                        <img src="figures/x.png" alt="what it shows">
+                        <figcaption>Caption line.</figcaption>
+                      </figure>
+     Size keywords: tiny | small | medium | large. Omit for the default.
+     The numbers themselves live in :root at the top of this stylesheet.
+     ==================================================================== */
+  .figure{margin:2.25rem 0;max-width:min(100%,var(--fig-max))}
+  .figure.fig-tiny  {max-width:min(100%,var(--fig-tiny))}
+  .figure.fig-small {max-width:min(100%,var(--fig-small))}
+  .figure.fig-medium{max-width:min(100%,var(--fig-medium))}
+  .figure.fig-large {max-width:min(100%,var(--fig-max))}
+  .figure img{
+    display:block;width:100%;height:auto;margin:0;
+    border:1px solid var(--rule);
+  }
+  .figure figcaption{
     font:400 .8125rem/1.6 var(--mono);
     color:var(--slate);
     margin-top:.7rem;
     max-width:none;
   }
+  /* delete the two comment markers below to centre narrow figures
+  .figure{margin-left:auto;margin-right:auto}
+  */
   .post-body hr{border:none;border-top:1px solid var(--rule);margin:2.75rem 0}
   .post-body table{border-collapse:collapse;margin:0 0 1.25rem;font-size:1rem}
   .post-body th,.post-body td{border:1px solid var(--rule);padding:.55rem .8rem;text-align:left}
@@ -1191,8 +1197,8 @@ var PROJECTS = [
       /^[ \t]*!\[([^\]]*)\]\(\s*([^)\s]+)(?:\s+"([^"]*)")?\s*\)[ \t]*(?:(?:\r?\n[ \t]*){1,2}\*[ \t]*([^\n]*?)[ \t]*\*[ \t]*)?$/gm,
       function (_, alt, src, size, cap) {
         size = (size || '').trim();
-        var cls = /^(small|medium|large)$/.test(size) ? ' class="fig-' + size + '"' : '';
-        return '\n\n<figure' + cls + '><img src="' + attr(src) + '" alt="' + attr(alt) + '">' +
+        var cls = /^(tiny|small|medium|large)$/.test(size) ? ' fig-' + size : '';
+        return '\n\n<figure class="figure' + cls + '"><img src="' + attr(src) + '" alt="' + attr(alt) + '">' +
                (cap ? '<figcaption>' + attr(cap) + '</figcaption>' : '') +
                '</figure>\n\n';
       }
@@ -1255,7 +1261,7 @@ var PROJECTS = [
     p.body.innerHTML = '<p class="blog-empty">Loading&hellip;</p>';
     Promise.all([
       loadLibs(),
-      fetch(r.dir + '/' + slug + '.md').then(function (res) {
+      fetch(r.dir + '/' + slug + '.md', { cache: 'no-cache' }).then(function (res) {
         if (!res.ok) throw new Error(res.status);
         return res.text();
       })
