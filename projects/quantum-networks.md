@@ -6,16 +6,16 @@ exploit these entanglement resources by achieving network topologies suited to
 tasks such as quantum communication and routing, informed by the underlying
 spin model.
 
-![The giant component of emergent bipartite network for 512x512 lattice](figures/network-visual.png)
+![The giant component of emergent bipartite network for 512x512 lattice](figures/network_topological.png)
 *Averaged over 50 disorder realizations.*
 
-![The giant component of emergent multipartite network for 512x512 lattice](figures/hypergraph-visual.png)
+![The giant component of emergent multipartite network for 512x512 lattice](figures/hypergraph_topological.png)
 *Averaged over 50 disorder realizations.*
 
 ![The hyperdegree distribution on LCC of multipartite network for 4096x4096 lattice](figures/hyperdegree.png)
 *Averaged over 50 disorder realizations.*
 
-![The hyperedge size distribution on LCC of multipartite network for 4096x4096 lattice](figures/size-distribution.png)
+![The hyperedge size distribution on LCC of multipartite network for 4096x4096 lattice](figures/size_distribution.png)
 *Averaged over 50 disorder realizations.*
 <!--
   ============================================================
