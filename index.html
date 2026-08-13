@@ -84,31 +84,48 @@
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+  /* ============================================================
+     THE WHOLE LOOK OF THE SITE IS THESE TWO BLOCKS.
+     Change a hex here and it propagates everywhere — links, the
+     active tab, section labels, code backgrounds, borders.
+
+     --paper   page background
+     --ink     body text and headings
+     --slate   dates, labels, secondary text
+     --rule    every hairline and border
+     --accent  links, active tab, section labels, blockquote bar
+     --measure how wide prose is allowed to run
+
+     You do NOT need to touch --accent-wash. It is mixed from
+     --accent automatically. The rgba line above it is only a
+     fallback for very old browsers.
+     ============================================================ */
   :root{
     --paper:#fcfcfd;
     --ink:#14161b;
     --slate:#5c6472;
     --rule:#e4e6ea;
     --accent:#3538cd;
-    --accent-wash:rgba(53,56,205,.07);
+    --accent-wash:rgba(53,56,205,.08);
+    --accent-wash:color-mix(in srgb, var(--accent) 8%, transparent);
     --shadow:rgba(20,22,27,.14);
+
     --serif:"Spectral",Charter,Georgia,"Times New Roman",serif;
     --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --gutter:clamp(1.25rem,5vw,3rem);
-    --measure:46rem;   /* how wide prose is allowed to run */
+    --measure:46rem;
   }
-  /* if JavaScript is off, still respect the system setting */
-  @media (prefers-color-scheme:dark){
-    :root:not([data-theme="light"]){
-      --paper:#0f1115; --ink:#e7e9ee; --slate:#959dac;
-      --rule:#242830; --accent:#9aa1ff; --accent-wash:rgba(154,161,255,.10);
-      --shadow:rgba(0,0,0,.5);
-    }
-  }
-  /* an explicit choice always wins — must come after the query */
+
+  /* The script in <head> always sets data-theme, so the dark palette
+     lives in exactly one place. Keep the same variable names. */
   :root[data-theme="dark"]{
-    --paper:#0f1115; --ink:#e7e9ee; --slate:#959dac;
-    --rule:#242830; --accent:#9aa1ff; --accent-wash:rgba(154,161,255,.10);
+    --paper:#0f1115;
+    --ink:#e7e9ee;
+    --slate:#959dac;
+    --rule:#242830;
+    --accent:#9aa1ff;
+    --accent-wash:rgba(154,161,255,.15);
+    --accent-wash:color-mix(in srgb, var(--accent) 15%, transparent);
     --shadow:rgba(0,0,0,.5);
   }
 
@@ -669,7 +686,7 @@
         <div class="entry">
           <div class="entry-when">May&ndash;Nov 2025</div>
           <div>
-            <h3 class="entry-title"><a href="#research/hofstadter-hubbard">Hofstadter&ndash;Hubbard model</a></h3>
+            <h3 class="entry-title">Hofstadter&ndash;Hubbard model</h3>
             <p class="entry-where">with Dr. Zhehao Dai</p>
             <p class="entry-body">
               Studied the fractional quantum Hall effect and Chern&ndash;Simons theory.
@@ -684,7 +701,7 @@
         <div class="entry">
           <div class="entry-when">Aug 2024&ndash;May 2025</div>
           <div>
-            <h3 class="entry-title"><a href="#research/snail-floquet">Floquet analysis for the SNAIL</a></h3>
+            <h3 class="entry-title">Floquet analysis for the SNAIL</h3>
             <p class="entry-where">with Dr. Roger Mong</p>
             <p class="entry-body">
               Derived the effective Floquet Hamiltonian of a driven anharmonic
@@ -995,10 +1012,8 @@ var POSTS = [
 ];
 
 var PROJECTS = [
-  { slug: 'quantum-networks',    title: 'Quantum networks from spin models', date: 'Mar 2026 \u2013 present' },
-  { slug: 'hofstadter-hubbard',  title: 'Hofstadter\u2013Hubbard model',      date: 'May \u2013 Nov 2025' },
-  { slug: 'snail-floquet',       title: 'Floquet analysis for the SNAIL',    date: 'Aug 2024 \u2013 May 2025' },
-  { slug: 'stochastic-resetting',title: 'Diffusion under stochastic resetting', date: 'Jan \u2013 Jul 2022' }
+  { slug: 'quantum-networks',     title: 'Quantum networks from spin models',    date: 'Mar 2026 \u2013 present' },
+  { slug: 'stochastic-resetting', title: 'Diffusion under stochastic resetting', date: 'Jan \u2013 Jul 2022' }
 ];
 
 /* ---- nothing below here needs editing ---- */
