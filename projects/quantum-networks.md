@@ -1,6 +1,6 @@
 Physical lattice models as a testbed for real-world quantum networks. This page collects the work presented as a poster at **IEEE Quantum Week (QCE) 2026** — *Multipartite entanglement characterization in quantum networks from spin clusters*, with Zhehao Dai and Kaushik P. Seshadreesan.
 
-<p class="pub-links"><a href="qce2026-poster.pdf">Poster (PDF)</a> <a href="FORM_URL" target="_blank" rel="noopener">Send feedback</a> <a href="mailto:sij50@pitt.edu?subject=QCE%202026%20poster">Email me</a></p>
+<p class="pub-links"><a href="qce2026-poster.pdf">Poster (PDF)</a> <a href="https://docs.google.com/forms/d/e/1FAIpQLSeZgmqMCvZTdBU_3LQP4Zfzr2a0a_ALQYtFLkTUOidTJ8_TMQ/viewform?usp=publish-editor" target="_blank" rel="noopener">Send feedback</a> <a href="mailto:sij50@pitt.edu?subject=QCE%202026%20poster">Email me</a></p>
 
 ## Why look at a spin model
 
