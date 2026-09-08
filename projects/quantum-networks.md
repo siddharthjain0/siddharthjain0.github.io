@@ -29,11 +29,15 @@ Only about **10% of hyperedges are multipartite**, yet those few reach roughly *
 
 The hyperdegree distribution is heavy-tailed, with an exponent inside the $2 < \gamma < 3$ window — the regime associated with scale-free behaviour, meaning the network has hubs rather than a typical degree. The hyperedge-size distribution is also heavy-tailed, but with a steeper exponent.
 
-![Hyperdegree distribution on log-log axes, following a power law.](figures/total_hyperdegree.png "medium")
+![Hyperdegree distribution on log-log axes, following a power law.](figures/hyperdegree.png "medium")
 *Hyperdegree distribution.*
 
-![Hyperedge-size distribution on log-log axes.](figures/hyperedge_size.png "medium")
+![Hyperedge-size distribution on log-log axes.](figures/size_distribution.png "medium")
 *Hyperedge-size distribution.*
+
+![Emergent Bipartite network.](figures/network_topological.png "medium")
+
+![Emergent Multipartite network.](figures/hypergraph_topological.png "medium")
 
 ## Structure beyond the distributions
 
