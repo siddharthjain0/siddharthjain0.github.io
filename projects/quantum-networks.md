@@ -53,4 +53,4 @@ Currently in progress: robustness and long-range connectivity of the multipartit
 
 If this connects to your own work, if you think something here is wrong, or if you would like to know when the preprint appears, I would like to hear from you.
 
-<p class="pub-links"><a href="FORM_URL" target="_blank" rel="noopener">Share feedback or an idea</a> <a href="mailto:sij50@pitt.edu?subject=QCE%202026%20poster">sij50@pitt.edu</a></p>
+<p class="pub-links"><a href="https://docs.google.com/forms/d/e/1FAIpQLSeZgmqMCvZTdBU_3LQP4Zfzr2a0a_ALQYtFLkTUOidTJ8_TMQ/viewform?usp=publish-editor" target="_blank" rel="noopener">Share feedback or an idea</a> <a href="mailto:sij50@pitt.edu?subject=QCE%202026%20poster">sij50@pitt.edu</a></p>
