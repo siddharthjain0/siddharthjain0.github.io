@@ -38,14 +38,16 @@ The hyperdegree distribution is heavy-tailed, with an exponent inside the $2 < \
 *Hyperedge-size distribution.*
 
 ![Emergent Bipartite network.](figures/network_topological.png "medium")
+*Emergent Pairwise Network of our model.*
 
 ![Emergent Multipartite network.](figures/hypergraph_topological.png "medium")
+*Emergent Multipartite Network of our model.*
 
 ## Structure beyond the distributions
 
 An obvious objection: if the interesting content is just two power laws, why not build an abstract hypergraph with the same distributions and skip the physics entirely?
 
-We tested that directly, against a configuration-model null — same hyperdegree distribution, same hyperedge-size distribution, wiring otherwise randomized. The real network is significantly **more disassortative** than the null, and the discrepancy *grows* with system size: roughly $4\sigma$ per sample at $L = 1024$, in all 50 samples, while the largest-component size matches the null almost exactly (so it is not a connectivity artifact).
+We tested that directly, against Hypergraph Configuration Model null — same hyperdegree distribution, same hyperedge-size distribution, wiring otherwise randomized. The real network is significantly **more disassortative** than the null, and the discrepancy *grows* with system size while the largest-component size matches the null almost exactly (so it is not a connectivity artifact).
 
 That null model *is* the abstract matched-distribution hypergraph. It does not reproduce this structure, which is the empirical answer to the objection: the physics is putting something there that the marginals alone do not imply.
 
