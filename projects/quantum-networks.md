@@ -6,7 +6,9 @@ Physical lattice models as a testbed for real-world quantum networks. This page 
 
 Multiparty protocols — conference key agreement, distributed quantum computing, secret sharing — need entanglement shared among three or more parties at once, not just pairs. A natural question follows: what does a large network carrying that kind of entanglement actually look like? Which nodes become hubs, and how far do the multiparty links reach?
 
-Nobody can build one at that scale yet to go and measure it. So the alternative is to compute one. A disordered quantum magnet at its critical point has a ground state made of many independent GHZ clusters, each a small piece of genuine multiparty entanglement. Turning those clusters into network links gives a structure we can study at large sizes.
+Nobody can build one at that scale yet to go and measure it. So the alternative is to compute one. A disordered quantum magnet at its critical point has a ground state made of many independent GHZ clusters, each a small piece of genuine multiparty entanglement. Turning those clusters into network links gives a structure we can study at large sizes. 
+
+Can we deliberately engineer an entanglement-resource distribution with those same structural properties in a physical quantum-network platform? We want to follow this thread: what topology using physics gives us. Then ask in what ways this topology is useful. Understand what features of our construction and physics are responsible for the useful features of our network. And then can we engineer those features to obtain useful networks. 
 
 Earlier work built exactly this model but kept only the *pairwise* links — clusters touching two nodes — and discarded everything else. The discarded part is the multipartite resource. This project characterizes it.
 
