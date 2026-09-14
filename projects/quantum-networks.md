@@ -55,7 +55,7 @@ That null model *is* the abstract matched-distribution hypergraph. It does not r
 
 This is a physically-grounded generative model, not a hardware proposal, and the structure is not claimed to be that of any existing quantum network. The point is to give the multipartite regime a tractable testbed where complex topology *emerges* from a real Hamiltonian instead of being imposed by hand, and to check what that buys against the null models the network-science community already uses.
 
-Currently in progress: robustness and long-range connectivity of the multipartite layer — if the hubs are removed, does the multiparty network fragment, and can it carry entanglement over long distances? That is what decides whether this structure is useful for protocols rather than merely present. A rigorous entanglement-criterion check for the larger clusters is also on the list.
+Currently in progress: robustness and long-range connectivity of the multipartite layer — if the hubs are removed, does the multiparty network fragment, and can it carry entanglement over long distances? That is what decides whether this structure is useful for protocols rather than merely present.
 
 ## Feedback
 
