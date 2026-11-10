@@ -10,3 +10,12 @@ Quantum Repeaters
 Quantum error correcting codes
 Stabilizer states
 Graph states / Hypergraph states
+
+I already studied some concepts although I tend to forget them. Some of these include: 
+
+Measures of Entanglement
+Entanglement/Magic/Discord
+Clifford states
+Kraus Operators
+Choi Representation
+Noise channels
